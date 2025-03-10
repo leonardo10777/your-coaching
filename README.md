@@ -15,3 +15,6 @@ Funcionalidade 3
 O sistema deve fornecer uma página de catálogo que liste todos os Coachs cadastrados na plataforma, permitindo que os usuários explorem, filtrem e visualizem informações resumidas sobre cada Coach, incluindo avaliações e feedbacks. Essa página deve ser intuitiva e facilitar a descoberta de Coachs com base em critérios específicos.
 
 Funcionalidade 4
+**Página de Login**
+
+O sistema deve fornecer uma página de login segura e intuitiva, permitindo que usuários e Coachs acessem suas contas na plataforma. A página deve garantir a autenticação segura e fornecer opções para recuperação de senha e redirecionamento para o cadastro de novos usuários.
