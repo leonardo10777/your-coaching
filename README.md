@@ -43,3 +43,15 @@ Página de cadastro de usuário:
 Página de cadastro para Coach
 
 ![Registro do coach](https://github.com/user-attachments/assets/aa916e8c-6862-4618-8d3b-7358c0c7c8e9)
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Diagrama: Modelo Entidade Relacionamento
+
+![Diagrama](https://github.com/user-attachments/assets/b0e437fb-496d-4fac-b254-b211702d4557)
+
+
+
+
