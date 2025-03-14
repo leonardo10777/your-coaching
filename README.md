@@ -1,4 +1,9 @@
 # Your-Coaching
+
+**Objetivo da Your-Coaching**
+O objetivo deste site é facilitar a conexão entre usuários e coaches qualificados, oferecendo uma plataforma segura e confiável para quem busca orientação e desenvolvimento pessoal. Aqui, você pode encontrar profissionais especializados em diversas áreas, garantindo que o coach escolhido tenha a experiência necessária para atender às suas necessidades específicas. Nossa missão é proporcionar uma experiência transparente, onde você possa escolher com confiança o mentor ideal para o seu processo de evolução, seja no âmbito pessoal, profissional ou em áreas específicas de interesse.
+
+
 Funcionalidade 1
 
 **Cadastro de Coachs e Usuários** -
