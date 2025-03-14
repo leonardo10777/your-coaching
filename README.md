@@ -49,7 +49,7 @@ Página de cadastro para Coach
 
 ![Registro do coach](https://github.com/user-attachments/assets/aa916e8c-6862-4618-8d3b-7358c0c7c8e9)
 
-Catálogo de Coach
+Catálogo de Coach e Perfil
 
 ![Catálogo](https://github.com/user-attachments/assets/9e447105-6e38-4850-b995-e795b62b0636)
 
