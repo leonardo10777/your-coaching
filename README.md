@@ -23,3 +23,13 @@ Funcionalidade 5
 **Página de Visitante ou Inicial com Acesso ao Catálogo mediante Cadastro.**
 
 O sistema deve fornecer uma página inicial (ou de visitante) que permita aos usuários explorar informações básicas sobre a plataforma, mas restrinja o acesso completo ao catálogo de Coachs apenas para usuários cadastrados. A página inicial deve incentivar o cadastro, fornecendo uma visão geral das funcionalidades e benefícios da plataforma.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Protótipos do site
+
+Tela inicial:
+
+![Pagina Inicial](https://github.com/user-attachments/assets/cc3784cc-0fff-4b6a-a583-5c08b17f765b)
+
+
