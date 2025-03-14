@@ -39,3 +39,7 @@ Página de login:
 Página de cadastro de usuário:
 
 ![Registro de usuário](https://github.com/user-attachments/assets/94f8bdc5-ec1e-4e1f-a183-6acebe7ca881)
+
+Página de cadastro para Coach
+
+![Registro do coach](https://github.com/user-attachments/assets/aa916e8c-6862-4618-8d3b-7358c0c7c8e9)
