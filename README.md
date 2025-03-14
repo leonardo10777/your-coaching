@@ -46,7 +46,7 @@ Página de cadastro para Coach
 
 Catálogo de Coach
 
-![Catálogo](https://github.com/user-attachments/assets/869bf7a8-44d5-458c-89c4-8130c61f1e4f)
+![Catálogo](https://github.com/user-attachments/assets/9e447105-6e38-4850-b995-e795b62b0636)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
