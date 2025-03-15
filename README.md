@@ -7,7 +7,7 @@ O objetivo deste site é facilitar a conexão entre usuários e coaches qualific
 
 **<h2>Funcionalidades do sistema</h2>**
 
-**Cadastro de Coachs e Usuários** -
+**Cadastro de Coachs e Usuários** 
 
 O sistema deve permitir o cadastro de dois tipos de perfis: Coach e Usuário. Cada perfil deve ter informações específicas e únicas, garantindo que os dados sejam armazenados de forma segura e organizada.
 
@@ -52,10 +52,6 @@ O sistema deve fornecer uma página inicial (ou de visitante) que permita aos us
 ![Catálogo](https://github.com/user-attachments/assets/9e447105-6e38-4850-b995-e795b62b0636)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 <h1>Diagrama: Modelo Entidade Relacionamento</h1>
 
