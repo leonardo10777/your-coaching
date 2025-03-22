@@ -27,7 +27,7 @@ O sistema deve fornecer uma página de login segura e intuitiva, permitindo que 
 
 O sistema deve fornecer uma página inicial (ou de visitante) que permita aos usuários explorar informações básicas sobre a plataforma, mas restrinja o acesso completo ao catálogo de Coachs apenas para usuários cadastrados. A página inicial deve incentivar o cadastro, fornecendo uma visão geral das funcionalidades e benefícios da plataforma.
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+---
 
 <h1>Protótipos do site</h1>
 
@@ -51,7 +51,7 @@ O sistema deve fornecer uma página inicial (ou de visitante) que permita aos us
 
 ![Catálogo](https://github.com/user-attachments/assets/9e447105-6e38-4850-b995-e795b62b0636)
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+---
 
 <h1>Diagrama: Modelo Entidade Relacionamento</h1>
 
