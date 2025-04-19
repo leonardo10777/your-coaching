@@ -37,4 +37,7 @@ build/
 ### Mac OS ###
 .DS_Store
 
-.idea
+.idea/
+target/
+*.iml
+pi-codigos/
