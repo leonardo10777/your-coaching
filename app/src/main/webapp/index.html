@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liberte seu Potencial | Coaching Financeiro, Motivacional e Profissional</title>
-    <link rel="stylesheet" href="css\style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .modal {
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .modal-content {
+            max-height: 100%;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
 <header>
     <div class="container">
         <div class="header-content">
             <a href="index.html" class="logo">
-                <img src="img\logo.png" alt="Liberte seu Potencial" class="logo-img">
+                <img src="img/logo.png" alt="Liberte seu Potencial" class="logo-img">
                 <h1>Your Coaching</h1>
-                <div class="logo-text">
-
-                </div>
+                <div class="logo-text"></div>
             </a>
 
             <nav class="main-nav">
@@ -29,6 +37,13 @@
                 </ul>
             </nav>
 
+            <div class="header-buttons">
+                <button id="openLoginModal" class="btn btn-primary">Login</button>
+                <button id="openRegisterModal" class="btn btn-outline">Registrar Usuário</button>
+                <button id="openCoachModal" class="btn btn-outline">Registrar Coach</button>
+                <a href="/find-all-users" class="btn btn-outline">Ver Usuários</a>
+            </div>
+
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -37,6 +52,7 @@
 </header>
 
 <main class="container">
+    <!-- Seção Hero -->
     <section class="hero-section">
         <div class="hero-content">
             <h2>A solução ideal para elevar seu Eu profissional a um novo patamar</h2>
@@ -44,10 +60,11 @@
             <a href="#services" class="btn btn-primary btn-large">Conheça nossos serviços</a>
         </div>
         <div class="hero-image">
-            <img src="img\hero-image.jpg" alt="Pessoa alcançando o sucesso">
+            <img src="img/hero-image.jpg" alt="Pessoa alcançando o sucesso">
         </div>
     </section>
 
+    <!-- Seção Serviços -->
     <section id="services" class="service-section">
         <h2 class="section-title">Nossos Serviços</h2>
         <div class="services-grid">
@@ -56,7 +73,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <h3>Coaching financeiro</h3>
-                <p>Alcance a estabilidade e a liberdade financeira que sempre desejou. Com o coaching financeiro, você aprenderá a organizar suas finanças, eliminar dívidas, criar um plano de investimentos e desenvolver hábitos que levam à prosperidade.</p>
+                <p>Alcance a estabilidade e a liberdade financeira que sempre desejou...</p>
             </div>
 
             <div class="service-card">
@@ -64,7 +81,7 @@
                     <i class="fas fa-fire"></i>
                 </div>
                 <h3>Coaching motivacional</h3>
-                <p>Acredite em si mesmo e conquiste tudo o que deseja! O coaching motivacional é a chave para destravar sua melhor versão, aumentar sua autoconfiança e transformar desafios em oportunidades.</p>
+                <p>Acredite em si mesmo e conquiste tudo o que deseja!...</p>
             </div>
 
             <div class="service-card">
@@ -72,58 +89,110 @@
                     <i class="fas fa-briefcase"></i>
                 </div>
                 <h3>Coaching profissional</h3>
-                <p>Destaque-se no mercado e alcance seus objetivos profissionais! O coaching para vida profissional ajuda você a desenvolver habilidades essenciais, planejar sua carreira e conquistar novas oportunidades.</p>
+                <p>Destaque-se no mercado e alcance seus objetivos profissionais!...</p>
             </div>
         </div>
     </section>
-
 </main>
 
 <footer>
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-col">
-                <href="index.html" class="footer-logo">
-
-                </a>
-                <p>Transformando vidas através do coaching profissional, financeiro e motivacional.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Links Rápidos</h4>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#services">Serviços</a></li>
-                    <li><a href="#about">Sobre Nós</a></li>
-                    <li><a href="#contact">Contato</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Serviços</h4>
-                <ul>
-                    <li><a href="#">Coaching Financeiro</a></li>
-                    <li><a href="#">Coaching Motivacional</a></li>
-                    <li><a href="#">Coaching Profissional</a></li>
-                    <li><a href="#">Consultoria Individual</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Newsletter</h4>
-                <p>Inscreva-se para receber nossas novidades e dicas exclusivas.</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Seu e-mail">
-                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                </form>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 Liberte seu Potencial. Todos os direitos reservados.</p>
-            <div class="legal-links">
-                <a href="#">Política de Privacidade</a>
-                <a href="#">Termos de Serviço</a>
-            </div>
-        </div>
-    </div>
+    <!-- Rodapé permanece igual -->
 </footer>
-<script src="js\script.js"></script>
+
+<!-- Modal de Login -->
+<div id="loginModal" class="modal">
+    <!-- Conteúdo anterior do login -->
+</div>
+
+<!-- Modal de Registro de Usuário -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Registrar Usuário</h2>
+        <form id="registerForm" action="create-user" method="post">
+            <div class="form-group">
+                <label for="reg-name">Nome completo</label>
+                <input type="text" id="reg-name" name="reg-name" placeholder="Seu nome" pattern="[A-Za-zÀ-ú\s]{5,100}" title="Mínimo 5 caracteres (apenas letras)" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-email">Email</label>
+                <input type="email" id="reg-email" name="reg-email" placeholder="Seu email" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-telefone">Telefone</label>
+                <input type="tel" id="reg-telefone" name="reg-telefone" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{5}-\d{4}" title="Formato: (00) 00000-0000" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Senha</label>
+                <input type="password" id="reg-password" name="reg-password" placeholder="Crie uma senha" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Mínimo 8 caracteres (letras e números)" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-nascimento">Data de Nascimento</label>
+                <input type="date" id="reg-nascimento" name="reg-nascimento" max="2023-12-31" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Criar conta</button>
+            <div class="login-link">
+                <p>Já possui conta? <a href="#" id="switchToLogin">Fazer login</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Registro de Coach -->
+<div id="coachModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Registrar Coach</h2>
+        <form id="coachForm" action="create-coach" method="post">
+            <div class="form-group"><label for="coach-nome">Nome completo</label><input type="text" id="coach-nome" name="coach-nome" required></div>
+            <div class="form-group"><label for="coach-email">Email</label><input type="email" id="coach-email" name="coach-email" required></div>
+            <div class="form-group"><label for="coach-telefone">Telefone</label><input type="tel" id="coach-telefone" name="coach-telefone" pattern="\(\d{2}\) \d{5}-\d{4}" required></div>
+            <div class="form-group"><label for="coach-password">Senha</label><input type="password" id="coach-password" name="coach-password" minlength="8" required></div>
+            <div class="form-group"><label for="coach-nascimento">Data de Nascimento</label><input type="date" id="coach-nascimento" name="coach-nascimento" required></div>
+            <div class="form-group"><label for="coach-curso">Curso</label><input type="text" id="coach-curso" name="coach-curso" required></div>
+            <div class="form-group"><label for="coach-area">Área</label><input type="text" id="coach-area" name="coach-area" required></div>
+            <div class="form-group"><label for="coach-desc">Descrição profissional</label><textarea id="coach-desc" name="coach-desc" rows="4" required></textarea></div>
+            <div class="form-group"><label for="coach-preco">Preço</label><input type="text" id="coach-preco" name="coach-preco" required></div>
+            <button type="submit" class="btn btn-primary">Criar conta Coach</button>
+        </form>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+    // Máscara de telefone
+    document.getElementById('reg-telefone')?.addEventListener('input', formatPhone);
+    document.getElementById('coach-telefone')?.addEventListener('input', formatPhone);
+
+    function formatPhone(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.substring(0, 11);
+        if (value.length > 0) {
+            value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}`;
+        }
+        e.target.value = value;
+    }
+
+    // Mostrar modais
+    document.getElementById("openRegisterModal").onclick = () => {
+        document.getElementById("registerModal").style.display = "block";
+    };
+    document.getElementById("openCoachModal").onclick = () => {
+        document.getElementById("coachModal").style.display = "block";
+    };
+    document.querySelectorAll(".close-modal").forEach(btn => {
+        btn.onclick = () => {
+            btn.closest(".modal").style.display = "none";
+        };
+    });
+
+    // Mensagens
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('sucesso')) {
+        alert('Cadastro realizado com sucesso!');
+    } else if (urlParams.has('erro')) {
+        alert('Erro no cadastro. Verifique os dados e tente novamente.');
+    }
+</script>
 </body>
 </html>

@@ -84,6 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'auto';
         }
     });
+    document.getElementById('viewDataBtn')?.addEventListener('click', function() {
+        window.location.href = 'list-data';
+    });
 
     // Suavizar rolagem para âncoras
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDao {
 
@@ -38,5 +40,43 @@ public class UsuarioDao {
             System.out.println("Falha na conexão com o banco");
             e.printStackTrace(); // Isso ajuda a ver detalhes do erro
         }
+    }
+
+    public List<Usuario> findAllUsuario() {
+        String SQL = "SELECT * FROM USUARIO";
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+            System.out.println("Sucesso na conexão com o banco");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Usuario usuario = new Usuario(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("NOME"),
+                        resultSet.getString("EMAIL"),
+                        resultSet.getString("TELEFONE"),
+                        resultSet.getString("SENHA"),
+                        resultSet.getDate("DATA_NASCIMENTO").toLocalDate()
+                );
+                usuarios.add(usuario);
+            }
+
+            System.out.println("Sucesso na busca de todos os usuários");
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+        } catch (Exception e) {
+            System.out.println("Falha na conexão com o banco");
+            System.out.println("Erro ao buscar usuários: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return usuarios;
     }
 }
