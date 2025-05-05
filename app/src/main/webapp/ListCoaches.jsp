@@ -48,27 +48,29 @@
         <table>
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Telefone</th>
-                    <th>Data Nascimento</th>
                     <th>Curso</th>
-                    <th>Área</th>
-                    <th>Descrição Profissional</th>
-                    <th>Preço</th>
+                    <th>Area</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach var="coach" items="${coaches}">
                     <tr>
+                        <td>${coach.id}</td>
                         <td>${coach.nome}</td>
                         <td>${coach.email}</td>
                         <td>${coach.telefone}</td>
-                        <td>${coach.dataNascimento}</td>
                         <td>${coach.curso}</td>
                         <td>${coach.area}</td>
-                        <td>${coach.descricaoprofissional}</td>
-                        <td>${coach.preco}</td>
+                        <td>
+                          <form action="/delete-coach" method="post">
+                            <input type="hidden" id="id" name="id" value="${coach.id}">
+                            <button type="submit">Delete</button>
+                           </form>
+                           </td>
                     </tr>
                 </c:forEach>
             </tbody>

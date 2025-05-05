@@ -26,6 +26,19 @@ public class Coach {
         this.preco = preco;
     }
 
+    public Coach(Integer id,String nome, String email, String telefone, String senha, LocalDate dataNascimento, String curso, String area, String descricaoprofissional, String preco) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.senha = senha;
+        this.dataNascimento = dataNascimento;
+        this.curso = curso;
+        this.area = area;
+        this.descricaoprofissional = descricaoprofissional;
+        this.preco = preco;
+    }
+
     public Integer getId() {
         return id;
     }

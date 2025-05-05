@@ -27,7 +27,7 @@ public class ListCoachServlet extends HttpServlet {
             request.setAttribute("coaches", coaches);
 
             // 3. Encaminhar para a página JSP
-            request.getRequestDispatcher("listCoaches.jsp").forward(request, response);
+            request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
 
         } catch (Exception e) {
             // 4. Tratamento de erro

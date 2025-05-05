@@ -1,3 +1,4 @@
+
 package YourCoaching.dao;
 
 import YourCoaching.model.Usuario;
@@ -78,5 +79,33 @@ public class UsuarioDao {
         }
 
         return usuarios;
+    }
+
+    public void deleteUserById(Integer userId) {
+        String SQL = "DELETE FROM USUARIO WHERE ID = ?";
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+            System.out.println("Sucesso na conexão com o banco");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, userId); // Define o ID como parâmetro
+
+            int rowsAffected = preparedStatement.executeUpdate(); // Executa a deleção
+
+            if (rowsAffected > 0) {
+                System.out.println("Usuário deletado com sucesso! ID: " + userId);
+            } else {
+                System.out.println("Nenhum usuário encontrado com o ID: " + userId);
+            }
+
+            preparedStatement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Falha ao deletar usuário");
+            System.out.println("Erro: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

@@ -1,11 +1,8 @@
 package YourCoaching.dao;
 
 import YourCoaching.model.Coach;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Date;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +51,7 @@ public class CoachDao {
 
             while (resultSet.next()) {
                 Coach coach = new Coach(
+                        resultSet.getInt("ID"),
                         resultSet.getString("NOME"),
                         resultSet.getString("EMAIL"),
                         resultSet.getString("TELEFONE"),
@@ -80,5 +78,33 @@ public class CoachDao {
         }
 
         return coaches;
+    }
+
+    public void deleteCoachById(Integer coachId) {
+        String SQL = "DELETE FROM COACH WHERE ID = ?";
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+            System.out.println("Sucesso na conexão com o banco");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, coachId); // Define o ID como parâmetro
+
+            int rowsAffected = preparedStatement.executeUpdate(); // Executa a deleção
+
+            if (rowsAffected > 0) {
+                System.out.println("Coach deletado com sucesso! ID: " + coachId);
+            } else {
+                System.out.println("Nenhum Coach encontrado com o ID: " + coachId);
+            }
+
+            preparedStatement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Falha ao deletar usuário");
+            System.out.println("Erro: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

@@ -32,6 +32,12 @@
                         <td>${usuario.nome}</td>
                         <td>${usuario.email}</td>
                         <td>${usuario.telefone}</td>
+                        <td>
+                         <form action="/delete-user" method="post">
+                              <input type="hidden" id="id" name="id" value="${usuario.id}">
+                              <button type="submit">Delete</button>
+                         </form>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
