@@ -1,4 +1,3 @@
-
 package YourCoaching.dao;
 
 import YourCoaching.model.Usuario;
@@ -13,34 +12,62 @@ import java.util.List;
 public class UsuarioDao {
 
     public void createUsuario(Usuario usuario) {
-        // SQL com todos os campos
         String SQL = "INSERT INTO USUARIO (NOME, EMAIL, TELEFONE, SENHA, DATA_NASCIMENTO) VALUES (?, ?, ?, ?, ?)";
 
         try {
-            // 1. Conectar ao banco
             Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
             System.out.println("Sucesso na conexão com o banco");
 
-            // 2. Preparar a declaração SQL
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, usuario.getNome());
             preparedStatement.setString(2, usuario.getEmail());
             preparedStatement.setString(3, usuario.getTelefone());
-            preparedStatement.setString(4, usuario.getSenha()); // Em produção: usar hash!
+            preparedStatement.setString(4, usuario.getSenha());
             preparedStatement.setDate(5, Date.valueOf(usuario.getDataNascimento()));
 
-            // 3. Executar a inserção
             preparedStatement.execute();
             System.out.println("Sucesso na inserção do usuário");
 
-            // 4. Fechar recursos
             preparedStatement.close();
             connection.close();
 
         } catch (Exception e) {
             System.out.println("Falha na conexão com o banco");
-            e.printStackTrace(); // Isso ajuda a ver detalhes do erro
+            e.printStackTrace();
         }
+    }
+
+    public Usuario findUsuarioByEmailAndSenha(String email, String senha) {
+        String SQL = "SELECT * FROM USUARIO WHERE EMAIL = ? AND SENHA = ?";
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, senha);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Usuario(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("NOME"),
+                        resultSet.getString("EMAIL"),
+                        resultSet.getString("TELEFONE"),
+                        resultSet.getString("SENHA"),
+                        resultSet.getDate("DATA_NASCIMENTO").toLocalDate()
+                );
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar usuário: " + e.getMessage());
+        }
+
+        return null;
     }
 
     public List<Usuario> findAllUsuario() {
@@ -89,9 +116,9 @@ public class UsuarioDao {
             System.out.println("Sucesso na conexão com o banco");
 
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, userId); // Define o ID como parâmetro
+            preparedStatement.setInt(1, userId);
 
-            int rowsAffected = preparedStatement.executeUpdate(); // Executa a deleção
+            int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
                 System.out.println("Usuário deletado com sucesso! ID: " + userId);

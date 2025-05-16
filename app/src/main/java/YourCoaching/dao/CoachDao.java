@@ -38,6 +38,43 @@ public class CoachDao {
         }
     }
 
+    public Coach findCoachByEmailAndSenha(String email, String senha) {
+        String SQL = "SELECT * FROM COACH WHERE EMAIL = ? AND SENHA = ?";
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, senha);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Coach(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("NOME"),
+                        resultSet.getString("EMAIL"),
+                        resultSet.getString("TELEFONE"),
+                        resultSet.getString("SENHA"),
+                        resultSet.getDate("DATA_NASCIMENTO").toLocalDate(),
+                        resultSet.getString("CURSO"),
+                        resultSet.getString("AREA"),
+                        resultSet.getString("DESCRICAOPROFISSIONAL"),
+                        resultSet.getString("PRECO")
+                );
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar coach: " + e.getMessage());
+        }
+
+        return null;
+    }
+
     public List<Coach> findAllCoaches() {
         String SQL = "SELECT * FROM COACH";
         List<Coach> coaches = new ArrayList<>();
@@ -88,9 +125,9 @@ public class CoachDao {
             System.out.println("Sucesso na conexão com o banco");
 
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, coachId); // Define o ID como parâmetro
+            preparedStatement.setInt(1, coachId);
 
-            int rowsAffected = preparedStatement.executeUpdate(); // Executa a deleção
+            int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
                 System.out.println("Coach deletado com sucesso! ID: " + coachId);
