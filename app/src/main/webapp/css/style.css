@@ -728,3 +728,109 @@ footer {
         padding: 30px 20px;
     }
 }
+
+/* Adicione estas classes no final do arquivo */
+
+.coach-section {
+    padding: 80px 0;
+}
+
+.coach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.coach-card {
+    background-color: var(--lighter-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.coach-card:hover {
+    transform: translateY(-10px);
+}
+
+.coach-header {
+    padding: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.coach-name {
+    font-size: 1.8rem;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.coach-specialty {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.coach-body {
+    padding: 30px;
+}
+
+.coach-description {
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.coach-footer {
+    padding: 20px 30px;
+    background-color: var(--light-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.coach-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.coach-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-light);
+}
+
+.coach-rating i {
+    color: #FFD700;
+}
+
+.btn-know-more {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    padding: 12px 0;
+    background-color: var(--primary-color);
+    color: var(--lighter-color);
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-know-more:hover {
+    background-color: var(--secondary-color);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto 40px;
+}

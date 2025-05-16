@@ -101,7 +101,6 @@
         <div class="footer-content">
             <div class="footer-col">
                 <href="index.html" class="footer-logo">
-
                 </a>
                 <p>Transformando vidas através do coaching profissional, financeiro e motivacional.</p>
             </div>
@@ -144,7 +143,32 @@
 
 <!-- Modal de Login -->
 <div id="loginModal" class="modal">
-    <!-- Conteúdo anterior do login -->
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Login</h2>
+        <form id="loginForm" action="login" method="post">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" name="login-email" placeholder="Seu email" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Senha</label>
+                <input type="password" id="login-password" name="login-password" placeholder="Sua senha" required>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="tipo-usuario" value="usuario" checked> Usuário
+                </label>
+                <label>
+                    <input type="radio" name="tipo-usuario" value="coach"> Coach
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <div class="register-link">
+                <p>Não tem conta? <a href="#" id="switchToRegister">Crie uma conta</a></p>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- Modal de Registro de Usuário -->
@@ -234,7 +258,13 @@
     if (urlParams.has('sucesso')) {
         alert('Cadastro realizado com sucesso!');
     } else if (urlParams.has('erro')) {
-        alert('Erro no cadastro. Verifique os dados e tente novamente.');
+        if (urlParams.get('erro') === 'login') {
+            alert('Email ou senha incorretos!');
+        } else if (urlParams.get('erro') === 'banco-dados') {
+            alert('Erro no servidor. Tente novamente mais tarde.');
+        } else {
+            alert('Erro no cadastro. Verifique os dados e tente novamente.');
+        }
     }
 </script>
 </body>
