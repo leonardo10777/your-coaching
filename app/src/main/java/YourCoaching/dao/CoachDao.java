@@ -1,147 +1,123 @@
 package YourCoaching.dao;
 
 import YourCoaching.model.Coach;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CoachDao {
+    private static final String JDBC_URL = "jdbc:h2:~/test";
+    private static final String JDBC_USER = "sa";
+    private static final String JDBC_PASSWORD = "sa";
 
     public void createCoach(Coach coach) {
         String SQL = "INSERT INTO COACH (NOME, EMAIL, TELEFONE, SENHA, DATA_NASCIMENTO, CURSO, AREA, DESCRICAOPROFISSIONAL, PRECO) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
-            System.out.println("Sucesso na conexão com o banco");
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, coach.getNome());
-            preparedStatement.setString(2, coach.getEmail());
-            preparedStatement.setString(3, coach.getTelefone());
-            preparedStatement.setString(4, coach.getSenha());
-            preparedStatement.setDate(5, Date.valueOf(coach.getDataNascimento()));
-            preparedStatement.setString(6, coach.getCurso());
-            preparedStatement.setString(7, coach.getArea());
-            preparedStatement.setString(8, coach.getDescricaoprofissional());
-            preparedStatement.setString(9, coach.getPreco());
+            setCoachParameters(preparedStatement, coach);
+            preparedStatement.executeUpdate();
 
-            preparedStatement.execute();
-            System.out.println("Sucesso na inserção do coach");
-
-            preparedStatement.close();
-            connection.close();
-
-        } catch (Exception e) {
-            System.out.println("Falha na conexão com o banco");
-            e.printStackTrace();
-        }
-    }
-
-    public Coach findCoachByEmailAndSenha(String email, String senha) {
-        String SQL = "SELECT * FROM COACH WHERE EMAIL = ? AND SENHA = ?";
-
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, senha);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                return new Coach(
-                        resultSet.getInt("ID"),
-                        resultSet.getString("NOME"),
-                        resultSet.getString("EMAIL"),
-                        resultSet.getString("TELEFONE"),
-                        resultSet.getString("SENHA"),
-                        resultSet.getDate("DATA_NASCIMENTO").toLocalDate(),
-                        resultSet.getString("CURSO"),
-                        resultSet.getString("AREA"),
-                        resultSet.getString("DESCRICAOPROFISSIONAL"),
-                        resultSet.getString("PRECO")
-                );
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    coach.setId(generatedKeys.getInt(1));
+                }
             }
-
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar coach: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException("Error creating coach", e);
         }
-
-        return null;
     }
 
     public List<Coach> findAllCoaches() {
         String SQL = "SELECT * FROM COACH";
         List<Coach> coaches = new ArrayList<>();
 
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
-            System.out.println("Sucesso na conexão com o banco");
-
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                Coach coach = new Coach(
-                        resultSet.getInt("ID"),
-                        resultSet.getString("NOME"),
-                        resultSet.getString("EMAIL"),
-                        resultSet.getString("TELEFONE"),
-                        resultSet.getString("SENHA"),
-                        resultSet.getDate("DATA_NASCIMENTO").toLocalDate(),
-                        resultSet.getString("CURSO"),
-                        resultSet.getString("AREA"),
-                        resultSet.getString("DESCRICAOPROFISSIONAL"),
-                        resultSet.getString("PRECO")
-                );
-                coaches.add(coach);
+                coaches.add(mapResultSetToCoach(resultSet));
             }
-
-            System.out.println("Sucesso na busca de todos os coaches");
-
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-
-        } catch (Exception e) {
-            System.out.println("Falha na conexão com o banco");
-            System.out.println("Erro ao buscar coaches: " + e.getMessage());
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding all coaches", e);
         }
-
         return coaches;
     }
 
-    public void deleteCoachById(Integer coachId) {
+    public Coach findCoachById(int id) {
+        String SQL = "SELECT * FROM COACH WHERE ID = ?";
+
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+
+            preparedStatement.setInt(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToCoach(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding coach by ID", e);
+        }
+        return null;
+    }
+
+    public void updateCoach(Coach coach) {
+        String SQL = "UPDATE COACH SET NOME = ?, EMAIL = ?, TELEFONE = ?, SENHA = ?, DATA_NASCIMENTO = ?, " +
+                "CURSO = ?, AREA = ?, DESCRICAOPROFISSIONAL = ?, PRECO = ? WHERE ID = ?";
+
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+
+            setCoachParameters(preparedStatement, coach);
+            preparedStatement.setInt(10, coach.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating coach", e);
+        }
+    }
+
+    public void deleteCoachById(int id) {
         String SQL = "DELETE FROM COACH WHERE ID = ?";
 
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
-            System.out.println("Sucesso na conexão com o banco");
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, coachId);
-
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Coach deletado com sucesso! ID: " + coachId);
-            } else {
-                System.out.println("Nenhum Coach encontrado com o ID: " + coachId);
-            }
-
-            preparedStatement.close();
-            connection.close();
-
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Falha ao deletar usuário");
-            System.out.println("Erro: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Error deleting coach", e);
         }
+    }
+
+    // Helper methods
+    private void setCoachParameters(PreparedStatement ps, Coach coach) throws SQLException {
+        ps.setString(1, coach.getNome());
+        ps.setString(2, coach.getEmail());
+        ps.setString(3, coach.getTelefone());
+        ps.setString(4, coach.getSenha());
+        ps.setDate(5, Date.valueOf(coach.getDataNascimento()));
+        ps.setString(6, coach.getCurso());
+        ps.setString(7, coach.getArea());
+        ps.setString(8, coach.getDescricaoprofissional());
+        ps.setString(9, coach.getPreco());
+    }
+
+    private Coach mapResultSetToCoach(ResultSet rs) throws SQLException {
+        return new Coach(
+                rs.getInt("ID"),
+                rs.getString("NOME"),
+                rs.getString("EMAIL"),
+                rs.getString("TELEFONE"),
+                rs.getString("SENHA"),
+                rs.getDate("DATA_NASCIMENTO").toLocalDate(),
+                rs.getString("CURSO"),
+                rs.getString("AREA"),
+                rs.getString("DESCRICAOPROFISSIONAL"),
+                rs.getString("PRECO")
+        );
     }
 }
