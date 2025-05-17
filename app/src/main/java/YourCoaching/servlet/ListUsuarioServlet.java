@@ -2,7 +2,6 @@ package YourCoaching.servlet;
 
 import YourCoaching.dao.UsuarioDao;
 import YourCoaching.model.Usuario;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,21 +18,11 @@ public class ListUsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // 1. Obter lista de usuários usando o DAO
-            UsuarioDao usuarioDao = new UsuarioDao();
-            List<Usuario> usuarios = usuarioDao.findAllUsuario();
-
-            // 2. Adicionar lista no escopo da requisição
+            List<Usuario> usuarios = new UsuarioDao().findAllUsuario();
             request.setAttribute("usuarios", usuarios);
-
-            // 3. Encaminhar para a página JSP
-            request.getRequestDispatcher("listUsers.jsp").forward(request, response);
-
+            request.getRequestDispatcher("listUsers.jsp").forward(request, response); // Nome corrigido aqui
         } catch (Exception e) {
-            // 4. Tratamento de erro
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao listar usuários: " + e.getMessage());
+            response.sendRedirect("index.html?erro=banco-dados");
         }
     }
 

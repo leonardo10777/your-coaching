@@ -2,7 +2,6 @@ package YourCoaching.servlet;
 
 import YourCoaching.dao.CoachDao;
 import YourCoaching.model.Coach;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,21 +18,15 @@ public class ListCoachServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // 1. Obter lista de coaches usando o DAO
             CoachDao coachDao = new CoachDao();
             List<Coach> coaches = coachDao.findAllCoaches();
 
-            // 2. Adicionar lista no escopo da requisição
             request.setAttribute("coaches", coaches);
-
-            // 3. Encaminhar para a página JSP
             request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
 
         } catch (Exception e) {
-            // 4. Tratamento de erro
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao listar coaches: " + e.getMessage());
+            response.sendRedirect("index.html?erro=banco-dados");
         }
     }
 

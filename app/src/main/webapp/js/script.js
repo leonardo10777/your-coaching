@@ -105,15 +105,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Tratamento de mensagens de erro
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('erro')) {
-        if (urlParams.get('erro') === 'login') {
-            alert('Email ou senha incorretos!');
-            loginModal.style.display = 'block';
-        } else if (urlParams.get('erro') === 'banco-dados') {
-            alert('Erro no servidor. Tente novamente mais tarde.');
-        }
-    }
 });
