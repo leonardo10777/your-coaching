@@ -25,10 +25,10 @@ public class UpdateCoachServlet extends HttpServlet {
                 request.setAttribute("coach", coach);
                 request.getRequestDispatcher("/editarCoach.jsp").forward(request, response);
             } else {
-                response.sendRedirect("/find-all-coaches?erro=coach_nao_encontrado");
+                response.sendRedirect(request.getContextPath() + "/find-all-coaches?error=not_found");
             }
         } catch (Exception e) {
-            response.sendRedirect("/find-all-coaches?erro=busca");
+            response.sendRedirect(request.getContextPath() + "/find-all-coaches?error=load_error");
         }
     }
 
@@ -51,11 +51,10 @@ public class UpdateCoachServlet extends HttpServlet {
             );
 
             new CoachDao().updateCoach(coach);
-            response.sendRedirect("/find-all-coaches?sucesso=atualizado");
+            response.sendRedirect(request.getContextPath() + "/find-all-coaches?success=updated");
 
         } catch (Exception e) {
-            response.sendRedirect("/edit-coach?id=" + request.getParameter("id") + "&erro=atualizacao");
-            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/edit-coach?id=" + request.getParameter("id") + "&error=update_failed");
         }
     }
 }

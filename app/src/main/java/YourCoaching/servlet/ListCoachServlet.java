@@ -18,15 +18,22 @@ public class ListCoachServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            CoachDao coachDao = new CoachDao();
-            List<Coach> coaches = coachDao.findAllCoaches();
+            CoachDao dao = new CoachDao();
+            dao.createTableIfNotExists(); // Garante que a tabela existe
+
+            List<Coach> coaches = dao.findAllCoaches();
+
+            if (coaches == null || coaches.isEmpty()) {
+                request.setAttribute("emptyMessage", "Nenhum coach cadastrado");
+            }
 
             request.setAttribute("coaches", coaches);
             request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("index.html?erro=banco-dados");
+            request.setAttribute("errorMessage", "Erro ao carregar lista de coaches");
+            request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
         }
     }
 

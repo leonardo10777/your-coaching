@@ -4,7 +4,6 @@ import YourCoaching.dao.CoachDao;
 import YourCoaching.dao.UsuarioDao;
 import YourCoaching.model.Coach;
 import YourCoaching.model.Usuario;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,44 +14,46 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String email = request.getParameter("login-email");
-        String senha = request.getParameter("login-password");
-        String tipoUsuario = request.getParameter("tipo-usuario");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String senha = request.getParameter("senha");
+        String tipoUsuario = request.getParameter("tipoUsuario"); // "usuario" ou "coach"
 
         try {
-            if ("coach".equals(tipoUsuario)) {
-                CoachDao coachDao = new CoachDao();
-                Coach coach = coachDao.findCoachByEmailAndSenha(email, senha);
-
-                if (coach != null) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user", coach);
-                    session.setAttribute("tipoUsuario", "coach");
-                    response.sendRedirect("dashboard-coach.html");
-                } else {
-                    response.sendRedirect("index.html?erro=login");
-                }
-            } else {
+            if ("usuario".equals(tipoUsuario)) {
                 UsuarioDao usuarioDao = new UsuarioDao();
                 Usuario usuario = usuarioDao.findUsuarioByEmailAndSenha(email, senha);
-
                 if (usuario != null) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("user", usuario);
+                    session.setAttribute("usuario", usuario);
                     session.setAttribute("tipoUsuario", "usuario");
-                    response.sendRedirect("list-coaches-for-users");  // Alterado para redirecionar para a lista de coaches
+                    response.sendRedirect("dashboard-usuario.html");
                 } else {
-                    response.sendRedirect("index.html?erro=login");
+                    request.setAttribute("mensagem", "Email ou senha incorretos.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
+            } else if ("coach".equals(tipoUsuario)) {
+                CoachDao coachDao = new CoachDao();
+                Coach coach = coachDao.findCoachByEmailAndSenha(email, senha);
+                if (coach != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("coach", coach);
+                    session.setAttribute("tipoUsuario", "coach");
+                    response.sendRedirect("dashboard-coach.html.jsp");
+                } else {
+                    request.setAttribute("mensagem", "Email ou senha incorretos.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }
+            } else {
+                request.setAttribute("mensagem", "Tipo de usuário inválido.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("index.html?erro=banco-dados");
+            request.setAttribute("mensagem", "Erro no servidor.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 }
