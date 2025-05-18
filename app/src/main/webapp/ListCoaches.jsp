@@ -9,10 +9,14 @@
         :root {
             --primary-color: #4CAF50;
             --secondary-color: #f44336;
-            --hover-color: #45a049;
+            --info-color: #2196F3;
+            --hover-primary: #45a049;
+            --hover-secondary: #d32f2f;
+            --hover-info: #0b7dda;
             --text-color: #333;
             --light-gray: #f5f5f5;
             --white: #fff;
+            --border-color: #ddd;
             --shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
@@ -42,19 +46,19 @@
 
         .table-container {
             overflow-x: auto;
+            margin: 20px 0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
             font-size: 0.95rem;
         }
 
         th, td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
@@ -91,12 +95,12 @@
         }
 
         .btn-edit {
-            background-color: #2196F3;
+            background-color: var(--info-color);
             color: var(--white);
         }
 
         .btn-edit:hover {
-            background-color: #0b7dda;
+            background-color: var(--hover-info);
         }
 
         .btn-delete {
@@ -107,21 +111,23 @@
         }
 
         .btn-delete:hover {
-            background-color: #d32f2f;
+            background-color: var(--hover-secondary);
         }
 
         .btn-back {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             margin-top: 25px;
             padding: 10px 20px;
             background-color: var(--primary-color);
             color: var(--white);
             text-decoration: none;
             border-radius: 4px;
+            transition: background-color 0.3s;
         }
 
         .btn-back:hover {
-            background-color: var(--hover-color);
+            background-color: var(--hover-primary);
         }
 
         .status-message {
@@ -129,20 +135,35 @@
             margin-bottom: 20px;
             border-radius: 4px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .success {
             background-color: #dff0d8;
             color: #3c763d;
+            border-left: 4px solid #3c763d;
         }
 
         .error {
             background-color: #f2dede;
             color: #a94442;
+            border-left: 4px solid #a94442;
         }
 
         .icon {
-            margin-right: 5px;
+            margin-right: 8px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin: 20px 0;
         }
 
         @media (max-width: 768px) {
@@ -159,6 +180,11 @@
                 flex-direction: column;
                 gap: 5px;
             }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -167,66 +193,78 @@
         <h1><i class="fas fa-users icon"></i>Lista de Coaches</h1>
 
         <%-- Mensagens de status --%>
-        <c:if test="${not empty param.sucesso}">
+        <c:if test="${not empty param.success}">
             <div class="status-message success">
                 <i class="fas fa-check-circle icon"></i>
                 <c:choose>
-                    <c:when test="${param.sucesso == 'atualizado'}">Coach atualizado com sucesso!</c:when>
-                    <c:when test="${param.sucesso == 'deletado'}">Coach removido com sucesso!</c:when>
+                    <c:when test="${param.success == 'updated'}">Coach atualizado com sucesso!</c:when>
+                    <c:when test="${param.success == 'deleted'}">Coach removido com sucesso!</c:when>
+                    <c:when test="${param.success == 'created'}">Coach cadastrado com sucesso!</c:when>
                 </c:choose>
             </div>
         </c:if>
 
-        <c:if test="${not empty param.erro}">
+        <c:if test="${not empty param.error}">
             <div class="status-message error">
                 <i class="fas fa-exclamation-circle icon"></i>
                 <c:choose>
-                    <c:when test="${param.erro == 'delecao'}">Erro ao deletar coach</c:when>
-                    <c:when test="${param.erro == 'atualizacao'}">Erro ao atualizar coach</c:when>
+                    <c:when test="${param.error == 'not_found'}">Coach não encontrado</c:when>
+                    <c:when test="${param.error == 'load_error'}">Erro ao carregar dados</c:when>
+                    <c:when test="${param.error == 'delete_error'}">Erro ao excluir coach</c:when>
                 </c:choose>
             </div>
         </c:if>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                        <th>Curso</th>
-                        <th>Área</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="coach" items="${coaches}">
+        <c:if test="${not empty emptyMessage}">
+            <div class="empty-message">
+                <i class="fas fa-info-circle icon"></i> ${emptyMessage}
+            </div>
+        </c:if>
+
+        <c:if test="${not empty coaches}">
+            <div class="table-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td>${coach.id}</td>
-                            <td>${coach.nome}</td>
-                            <td>${coach.email}</td>
-                            <td>${coach.telefone}</td>
-                            <td>${coach.curso}</td>
-                            <td>${coach.area}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="/edit-coach?id=${coach.id}" class="btn btn-edit">
-                                        <i class="fas fa-edit icon"></i> Editar
-                                    </a>
-                                    <form action="/delete-coach" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este coach?');" style="display:inline;">
-                                        <input type="hidden" name="id" value="${coach.id}">
-                                        <button type="submit" class="btn btn-delete">
-                                            <i class="fas fa-trash-alt icon"></i> Excluir
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Curso</th>
+                            <th>Área</th>
+                            <th>Ações</th>
                         </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="coach" items="${coaches}">
+                            <tr>
+                                <td>${coach.id}</td>
+                                <td>${coach.nome}</td>
+                                <td>${coach.email}</td>
+                                <td class="phone-number">${coach.telefone}</td>
+                                <td>${coach.curso}</td>
+                                <td>${coach.area}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="${pageContext.request.contextPath}/edit-coach?id=${coach.id}" class="btn btn-edit">
+                                            <i class="fas fa-edit icon"></i> Editar
+                                        </a>
+                                        <form action="${pageContext.request.contextPath}/delete-coach" method="post"
+                                              onsubmit="return confirm('Tem certeza que deseja excluir este coach?');"
+                                              style="display:inline;">
+                                            <input type="hidden" name="id" value="${coach.id}">
+                                            <button type="submit" class="btn btn-delete">
+                                                <i class="fas fa-trash-alt icon"></i> Excluir
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </c:if>
 
         <a href="index.html" class="btn btn-back">
             <i class="fas fa-arrow-left icon"></i> Voltar para Home
@@ -234,15 +272,26 @@
     </div>
 
     <script>
-        // Aplicar máscara de telefone nos campos existentes
-        document.querySelectorAll('td:nth-child(4)').forEach(td => {
+        // Aplicar máscara de telefone
+        document.querySelectorAll('.phone-number').forEach(td => {
             const phone = td.textContent.trim();
             if (phone) {
                 const cleaned = phone.replace(/\D/g, '');
                 if (cleaned.length === 11) {
                     td.textContent = cleaned.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+                } else if (cleaned.length === 10) {
+                    td.textContent = cleaned.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
                 }
             }
+        });
+
+        // Confirmar exclusão
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (!confirm('Tem certeza que deseja excluir este coach permanentemente?')) {
+                    e.preventDefault();
+                }
+            });
         });
     </script>
 </body>

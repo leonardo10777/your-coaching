@@ -21,7 +21,7 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input, textarea, select {
+        input, textarea {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -64,13 +64,6 @@
 <body>
     <div class="form-container">
         <h1>Editar Coach</h1>
-
-        <c:if test="${not empty param.erro}">
-            <div style="color: red; margin-bottom: 15px;">
-                Erro ao atualizar coach. Por favor, tente novamente.
-            </div>
-        </c:if>
-
         <form action="/update-coach" method="post">
             <input type="hidden" name="id" value="${coach.id}">
 

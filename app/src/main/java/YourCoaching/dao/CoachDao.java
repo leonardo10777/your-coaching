@@ -1,19 +1,17 @@
 package YourCoaching.dao;
 
+import YourCoaching.config.ConnectionPoolConfig;
 import YourCoaching.model.Coach;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CoachDao {
-    private static final String JDBC_URL = "jdbc:h2:~/test";
-    private static final String JDBC_USER = "sa";
-    private static final String JDBC_PASSWORD = "sa";
 
     public void createCoach(Coach coach) {
         String SQL = "INSERT INTO COACH (NOME, EMAIL, TELEFONE, SENHA, DATA_NASCIMENTO, CURSO, AREA, DESCRICAOPROFISSIONAL, PRECO) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = ConnectionPoolConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
             setCoachParameters(preparedStatement, coach);
@@ -33,7 +31,7 @@ public class CoachDao {
         String SQL = "SELECT * FROM COACH";
         List<Coach> coaches = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = ConnectionPoolConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -49,7 +47,7 @@ public class CoachDao {
     public Coach findCoachById(int id) {
         String SQL = "SELECT * FROM COACH WHERE ID = ?";
 
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = ConnectionPoolConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
             preparedStatement.setInt(1, id);
@@ -69,7 +67,7 @@ public class CoachDao {
         String SQL = "UPDATE COACH SET NOME = ?, EMAIL = ?, TELEFONE = ?, SENHA = ?, DATA_NASCIMENTO = ?, " +
                 "CURSO = ?, AREA = ?, DESCRICAOPROFISSIONAL = ?, PRECO = ? WHERE ID = ?";
 
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = ConnectionPoolConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
             setCoachParameters(preparedStatement, coach);
@@ -83,7 +81,7 @@ public class CoachDao {
     public void deleteCoachById(int id) {
         String SQL = "DELETE FROM COACH WHERE ID = ?";
 
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        try (Connection connection = ConnectionPoolConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
             preparedStatement.setInt(1, id);
@@ -119,5 +117,46 @@ public class CoachDao {
                 rs.getString("DESCRICAOPROFISSIONAL"),
                 rs.getString("PRECO")
         );
+    }
+
+    public Coach findCoachByEmailAndSenha(String email, String senha) {
+        String SQL = "SELECT * FROM COACH WHERE EMAIL = ? AND SENHA = ?";
+
+        try (Connection connection = ConnectionPoolConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, senha);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToCoach(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding coach by email and password", e);
+        }
+        return null;
+    }
+
+    public void createTableIfNotExists() {
+        String SQL = "CREATE TABLE IF NOT EXISTS COACH (" +
+                "ID INT AUTO_INCREMENT PRIMARY KEY, " +
+                "NOME VARCHAR(100) NOT NULL, " +
+                "EMAIL VARCHAR(100) NOT NULL UNIQUE, " +
+                "TELEFONE VARCHAR(20) NOT NULL, " +
+                "SENHA VARCHAR(100) NOT NULL, " +
+                "DATA_NASCIMENTO DATE NOT NULL, " +
+                "CURSO VARCHAR(100) NOT NULL, " +
+                "AREA VARCHAR(100) NOT NULL, " +
+                "DESCRICAOPROFISSIONAL VARCHAR(500) NOT NULL, " +
+                "PRECO VARCHAR(20) NOT NULL)";
+
+        try (Connection connection = ConnectionPoolConfig.getConnection();
+             Statement stmt = connection.createStatement()) {
+            stmt.execute(SQL);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao criar tabela", e);
+        }
     }
 }
