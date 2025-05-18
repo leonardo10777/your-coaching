@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -37,6 +38,22 @@
         .coach-header {
             padding: 30px;
             border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .coach-image-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-color);
+        }
+
+        .coach-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .coach-name {
@@ -96,6 +113,7 @@
             border-radius: 5px;
             font-weight: 600;
             transition: background-color 0.3s;
+            text-decoration: none;
         }
 
         .btn-know-more:hover {
@@ -116,65 +134,94 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">
-                    <img src="img/logo.png" alt="Liberte seu Potencial" class="logo-img">
-                    <h1>Your Coaching</h1>
-                </a>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <img src="img/logo.png" alt="Liberte seu Potencial" class="logo-img">
+                <h1>Your Coaching</h1>
+            </a>
 
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="dashboard-usuario.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                        <li><a href="perfil-usuario.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                        <li><a href="agendamentos.html"><i class="fas fa-calendar"></i> Agendamentos</a></li>
-                        <li><a href="list-coaches-for-users" class="active"><i class="fas fa-users"></i> Encontrar Coachs</a></li>
-                    </ul>
-                </nav>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="dashboard-usuario.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="perfil-usuario.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                    <li><a href="agendamentos.html"><i class="fas fa-calendar"></i> Agendamentos</a></li>
+                    <li><a href="list-coaches-for-users" class="active"><i class="fas fa-users"></i> Encontrar Coachs</a></li>
+                </ul>
+            </nav>
 
-                <a href="logout" class="btn btn-outline">Sair</a>
-            </div>
+            <a href="logout" class="btn btn-outline">Sair</a>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
-        <section class="coach-section">
-            <h1 class="section-title">Conheça Nossa Equipe</h1>
-            <p class="section-subtitle">Profissionais qualificados prontos para te ajudar a alcançar seus objetivos</p>
+<main class="container">
+    <section class="coach-section">
+        <h1 class="section-title">Conheça Nossa Equipe</h1>
+        <p class="section-subtitle">Profissionais qualificados prontos para te ajudar a alcançar seus objetivos</p>
 
-            <div class="coach-grid">
-                <c:forEach var="coach" items="${coaches}">
-                    <div class="coach-card">
-                        <div class="coach-header">
-                            <h2 class="coach-name">${coach.nome}</h2>
-                            <p class="coach-specialty">${coach.area}</p>
+        <div class="coach-grid">
+            <c:forEach var="coach" items="${coaches}">
+                <div class="coach-card">
+                    <div class="coach-header">
+                        <div class="coach-image-container">
+                            <c:choose>
+                                <c:when test="${not empty coach.image}">
+                                    <img src="${pageContext.request.contextPath}/img/${coach.image}"
+                                         alt="Foto do Coach ${coach.nome}"
+                                         class="coach-image"
+                                         onerror="this.src='${pageContext.request.contextPath}/img/default-coach.jpg'">
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/img/default-coach.jpg"
+                                         alt="Foto padrão do coach"
+                                         class="coach-image">
+                                </c:otherwise>
+                            </c:choose>
                         </div>
-                        <div class="coach-body">
-                            <p class="coach-description">${coach.descricaoprofissional}</p>
-                            <a href="#" class="btn-know-more">Agendar Consulta</a>
-                        </div>
-                        <div class="coach-footer">
-                            <span class="coach-price">${coach.preco}</span>
-                            <span class="coach-rating">
+                        <h2 class="coach-name">${coach.nome}</h2>
+                        <p class="coach-specialty">${coach.area}</p>
+                    </div>
+                    <div class="coach-body">
+                        <p class="coach-description">${coach.descricaoprofissional}</p>
+                        <a href="agendar-consulta?coachId=${coach.id}" class="btn-know-more">Agendar Consulta</a>
+                    </div>
+                    <div class="coach-footer">
+                            <span class="coach-price">
+                                <fmt:setLocale value="pt_BR"/>
+                                <fmt:formatNumber value="${coach.preco}" type="currency"/>
+                            </span>
+                        <span class="coach-rating">
                                 <i class="fas fa-star"></i>
                                 <span>4.9</span>
                             </span>
-                        </div>
                     </div>
-                </c:forEach>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; 2023 Liberte seu Potencial. Todos os direitos reservados.</p>
-            </div>
+                </div>
+            </c:forEach>
         </div>
-    </footer>
+    </section>
+</main>
 
-    <script src="js/script.js"></script>
+<footer>
+    <div class="container">
+        <div class="footer-bottom">
+            <p>&copy; 2023 Liberte seu Potencial. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script>
+    // Fallback para imagens que não carregarem
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('.coach-image');
+        images.forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = '${pageContext.request.contextPath}/img/default-coach.jpg';
+            });
+        });
+    });
+</script>
 </body>
 </html>

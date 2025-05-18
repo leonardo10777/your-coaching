@@ -9,7 +9,7 @@ import java.util.List;
 public class CoachDao {
 
     public void createCoach(Coach coach) {
-        String SQL = "INSERT INTO COACH (NOME, EMAIL, TELEFONE, SENHA, DATA_NASCIMENTO, CURSO, AREA, DESCRICAOPROFISSIONAL, PRECO) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO COACH (NOME, EMAIL, TELEFONE, SENHA, DATA_NASCIMENTO, CURSO, AREA, DESCRICAOPROFISSIONAL, PRECO, IMAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = ConnectionPoolConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -23,6 +23,7 @@ public class CoachDao {
                 }
             }
         } catch (SQLException e) {
+            System.out.println("Erro ao criar coach: " + e.getMessage());
             throw new RuntimeException("Error creating coach", e);
         }
     }
@@ -39,6 +40,7 @@ public class CoachDao {
                 coaches.add(mapResultSetToCoach(resultSet));
             }
         } catch (SQLException e) {
+            System.out.println("Erro ao buscar coaches: " + e.getMessage());
             throw new RuntimeException("Error finding all coaches", e);
         }
         return coaches;
@@ -58,6 +60,7 @@ public class CoachDao {
                 }
             }
         } catch (SQLException e) {
+            System.out.println("Erro ao buscar coach por ID: " + e.getMessage());
             throw new RuntimeException("Error finding coach by ID", e);
         }
         return null;
@@ -65,15 +68,16 @@ public class CoachDao {
 
     public void updateCoach(Coach coach) {
         String SQL = "UPDATE COACH SET NOME = ?, EMAIL = ?, TELEFONE = ?, SENHA = ?, DATA_NASCIMENTO = ?, " +
-                "CURSO = ?, AREA = ?, DESCRICAOPROFISSIONAL = ?, PRECO = ? WHERE ID = ?";
+                "CURSO = ?, AREA = ?, DESCRICAOPROFISSIONAL = ?, PRECO = ?, IMAGE = ? WHERE ID = ?";
 
         try (Connection connection = ConnectionPoolConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
             setCoachParameters(preparedStatement, coach);
-            preparedStatement.setInt(10, coach.getId());
+            preparedStatement.setInt(11, coach.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            System.out.println("Erro ao atualizar coach: " + e.getMessage());
             throw new RuntimeException("Error updating coach", e);
         }
     }
@@ -87,6 +91,7 @@ public class CoachDao {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            System.out.println("Erro ao deletar coach: " + e.getMessage());
             throw new RuntimeException("Error deleting coach", e);
         }
     }
@@ -102,6 +107,7 @@ public class CoachDao {
         ps.setString(7, coach.getArea());
         ps.setString(8, coach.getDescricaoprofissional());
         ps.setString(9, coach.getPreco());
+        ps.setString(10, coach.getImage());
     }
 
     private Coach mapResultSetToCoach(ResultSet rs) throws SQLException {
@@ -115,7 +121,8 @@ public class CoachDao {
                 rs.getString("CURSO"),
                 rs.getString("AREA"),
                 rs.getString("DESCRICAOPROFISSIONAL"),
-                rs.getString("PRECO")
+                rs.getString("PRECO"),
+                rs.getString("IMAGE")
         );
     }
 
@@ -134,6 +141,7 @@ public class CoachDao {
                 }
             }
         } catch (SQLException e) {
+            System.out.println("Erro ao buscar coach por email/senha: " + e.getMessage());
             throw new RuntimeException("Error finding coach by email and password", e);
         }
         return null;
@@ -150,12 +158,15 @@ public class CoachDao {
                 "CURSO VARCHAR(100) NOT NULL, " +
                 "AREA VARCHAR(100) NOT NULL, " +
                 "DESCRICAOPROFISSIONAL VARCHAR(500) NOT NULL, " +
-                "PRECO VARCHAR(20) NOT NULL)";
+                "PRECO VARCHAR(20) NOT NULL, " +
+                "IMAGE VARCHAR(250) NOT NULL)";
 
         try (Connection connection = ConnectionPoolConfig.getConnection();
              Statement stmt = connection.createStatement()) {
             stmt.execute(SQL);
+            System.out.println("Tabela COACH criada ou já existente");
         } catch (SQLException e) {
+            System.out.println("Erro ao criar tabela COACH: " + e.getMessage());
             throw new RuntimeException("Erro ao criar tabela", e);
         }
     }

@@ -1,51 +1,81 @@
-// Funções específicas para a página Sobre Nós
+/**
+ * Script específico para a página Sobre Nós
+ * Controla as animações de scroll e interações da página
+ */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Efeito de carregamento para as seções
-    const sections = document.querySelectorAll('section');
+    // =============================================
+    // ANIMAÇÕES DE SCROLL
+    // =============================================
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+    // Seleciona todas as seções que devem ser animadas
+    const animatedSections = document.querySelectorAll('.animated-section');
+
+    // Configuração inicial das seções animadas
+    function setupInitialStyles() {
+        animatedSections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+        });
+    }
+
+    // Observador de interseção para animar as seções
+    function initScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    sectionObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        animatedSections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+    }
+
+    // =============================================
+    // CONTROLE DOS BOTÕES
+    // =============================================
+
+    function setupModalButtons() {
+        const buttons = [
+            { id: 'openLoginModal', url: 'login.html' },
+            { id: 'openRegisterModal', url: 'registro-usuario.html' },
+            { id: 'openCoachModal', url: 'registro-coach.html' }
+        ];
+
+        buttons.forEach(button => {
+            const element = document.getElementById(button.id);
+            if (element) {
+                element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = button.url;
+                });
             }
         });
-    }, {
-        threshold: 0.1
-    });
-
-    sections.forEach(section => {
-        observer.observe(section);
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-    });
-
-    // Adiciona a classe 'visible' quando a seção aparece na tela
-    document.querySelectorAll('section').forEach(section => {
-        section.classList.add('visible');
-    });
-
-    // Integração com os modais (reutilizando funções do script principal)
-    const openLoginModal = document.getElementById('openLoginModal');
-    const openRegisterModal = document.getElementById('openRegisterModal');
-    const openCoachModal = document.getElementById('openCoachModal');
-
-    if (openLoginModal) {
-        openLoginModal.addEventListener('click', () => {
-            window.location.href = 'login.html';
-        });
     }
 
-    if (openRegisterModal) {
-        openRegisterModal.addEventListener('click', () => {
-            window.location.href = 'registro-usuario.html';
-        });
+    // =============================================
+    // INICIALIZAÇÃO
+    // =============================================
+
+    function init() {
+        setupInitialStyles();
+        initScrollAnimations();
+
+        // Delay para garantir que o DOM está totalmente carregado
+        setTimeout(setupModalButtons, 300);
     }
 
-    if (openCoachModal) {
-        openCoachModal.addEventListener('click', () => {
-            window.location.href = 'registro-coach.html';
-        });
-    }
+    // Inicia todas as funcionalidades
+    init();
 });

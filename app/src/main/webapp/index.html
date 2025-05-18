@@ -186,7 +186,7 @@
     <div class="modal-content">
         <span class="close-modal">&times;</span>
         <h2>Registrar Coach</h2>
-        <form id="coachForm" action="create-coach" method="post">
+        <form id="coachForm" action="create-coach" method="post" enctype="multipart/form-data">
             <div class="form-group"><label for="coach-nome">Nome completo</label><input type="text" id="coach-nome" name="coach-nome" required></div>
             <div class="form-group"><label for="coach-email">Email</label><input type="email" id="coach-email" name="coach-email" required></div>
             <div class="form-group"><label for="coach-telefone">Telefone</label><input type="tel" id="coach-telefone" name="coach-telefone" pattern="\(\d{2}\) \d{5}-\d{4}" required></div>
@@ -196,6 +196,7 @@
             <div class="form-group"><label for="coach-area">Área</label><input type="text" id="coach-area" name="coach-area" required></div>
             <div class="form-group"><label for="coach-desc">Descrição profissional</label><textarea id="coach-desc" name="coach-desc" rows="4" required></textarea></div>
             <div class="form-group"><label for="coach-preco">Preço</label><input type="text" id="coach-preco" name="coach-preco" required></div>
+            <div class="form-group"><label for="coach-image">Image</label><input type="file" id="coach-image" name="coach-image" required></div>
             <button type="submit" class="btn btn-primary">Criar conta Coach</button>
         </form>
     </div>

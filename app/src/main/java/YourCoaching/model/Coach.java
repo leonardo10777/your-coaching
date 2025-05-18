@@ -13,8 +13,10 @@ public class Coach {
     private String area;
     private String descricaoprofissional;
     private String preco;
+    private String image;
 
-    public Coach(String nome, String email, String telefone, String senha, LocalDate dataNascimento, String curso, String area, String descricaoprofissional, String preco) {
+    public Coach(String nome, String email, String telefone, String senha, LocalDate dataNascimento,
+                 String curso, String area, String descricaoprofissional, String preco) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
@@ -26,7 +28,9 @@ public class Coach {
         this.preco = preco;
     }
 
-    public Coach(Integer id,String nome, String email, String telefone, String senha, LocalDate dataNascimento, String curso, String area, String descricaoprofissional, String preco) {
+    public Coach(Integer id, String nome, String email, String telefone, String senha,
+                 LocalDate dataNascimento, String curso, String area,
+                 String descricaoprofissional, String preco) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -39,6 +43,38 @@ public class Coach {
         this.preco = preco;
     }
 
+    public Coach(String nome, String email, String telefone, String senha,
+                 LocalDate dataNascimento, String curso, String area,
+                 String descricaoprofissional, String preco, String image) {
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.senha = senha;
+        this.dataNascimento = dataNascimento;
+        this.curso = curso;
+        this.area = area;
+        this.descricaoprofissional = descricaoprofissional;
+        this.preco = preco;
+        this.image = image;
+    }
+
+    public Coach(Integer id, String nome, String email, String telefone, String senha,
+                 LocalDate dataNascimento, String curso, String area,
+                 String descricaoprofissional, String preco, String image) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.senha = senha;
+        this.dataNascimento = dataNascimento;
+        this.curso = curso;
+        this.area = area;
+        this.descricaoprofissional = descricaoprofissional;
+        this.preco = preco;
+        this.image = image;
+    }
+
+    // Getters e Setters
     public Integer getId() {
         return id;
     }
@@ -119,6 +155,14 @@ public class Coach {
         this.preco = preco;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Coach{" +
@@ -132,6 +176,7 @@ public class Coach {
                 ", area='" + area + '\'' +
                 ", descricaoprofissional='" + descricaoprofissional + '\'' +
                 ", preco='" + preco + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 }
