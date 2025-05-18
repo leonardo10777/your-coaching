@@ -1,0 +1,89 @@
+/* Estilos gerais mantidos */
+/* ... */
+
+/* Estilos específicos para o FAQ */
+.faq-section h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #2c3e50;
+    position: relative;
+    text-align: center;
+}
+
+.faq-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+    margin: 15px auto 0;
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    margin-bottom: 15px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.faq-question {
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 18px 25px;
+    background-color: #f9f9f9;
+    color: #2c3e50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #3498db;
+    transition: all 0.3s;
+}
+
+.faq-question:hover {
+    background-color: #f1f1f1;
+}
+
+.faq-question i {
+    color: #3498db;
+    transition: transform 0.3s;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: white;
+    padding: 0 25px;
+    border-left: 4px solid #f5f5f5;
+}
+
+.faq-answer.show {
+    max-height: 500px;
+    padding: 25px;
+    border-left: 4px solid #3498db;
+}
+
+.faq-question .rotate {
+    transform: rotate(180deg);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .faq-question {
+        font-size: 1.1rem;
+        padding: 15px 20px;
+    }
+
+    .faq-answer.show {
+        padding: 15px 20px;
+    }
+}

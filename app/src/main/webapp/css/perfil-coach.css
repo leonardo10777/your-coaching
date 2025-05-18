@@ -1,0 +1,255 @@
+/* ... (estilos anteriores mantidos) ... */
+
+/* Estilos para avaliações interativas */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.testimonial-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.testimonial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.client-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.client-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.client-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.client-name {
+    font-weight: 600;
+}
+
+.testimonial-date {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.testimonial-rating {
+    color: #ccc;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.testimonial-rating .star {
+    transition: color 0.2s;
+}
+
+.testimonial-rating .star.active {
+    color: #FFD700;
+}
+
+.testimonial-content p {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.testimonial-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.btn-like, .btn-reply {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #666;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.btn-like:hover, .btn-reply:hover {
+    color: #3498db;
+}
+
+.btn-like.liked {
+    color: #3498db;
+}
+
+.btn-like.liked i {
+    font-weight: 900;
+}
+
+/* Estilos para disponibilidade */
+.availability-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.form-control {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+}
+
+.availability-calendar {
+    margin-bottom: 20px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 5px;
+    color: #666;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-day:hover {
+    background-color: #f5f5f5;
+}
+
+.calendar-day.empty {
+    visibility: hidden;
+}
+
+.calendar-day.available {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.calendar-day.booked {
+    background-color: #ffebee;
+    color: #c62828;
+    font-weight: 600;
+}
+
+.calendar-day.unavailable {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.calendar-day.selected {
+    background-color: #3498db;
+    color: white;
+}
+
+.time-slots-container {
+    margin-top: 20px;
+}
+
+.time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.time-slot {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.time-slot:hover {
+    border-color: #3498db;
+}
+
+.time-slot.booked {
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #ffcdd2;
+    cursor: not-allowed;
+}
+
+.time-slot.selected {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+/* Estilos para modais */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.rating-input {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.rating-input .star-input {
+    transition: color 0.2s;
+}
+
+.rating-input .star-input.active {
+    color: #FFD700;
+}
+
+/* ... (media queries mantidos) ... */
