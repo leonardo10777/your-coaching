@@ -16,6 +16,11 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Redirecionar para a página de login se acessada via GET
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
@@ -29,6 +34,11 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("usuario", usuario);
                     session.setAttribute("tipoUsuario", "usuario");
+
+                    // Adicionar explicitamente ID e nome do usuário na sessão para uso no AddFeedbackServlet
+                    session.setAttribute("usuarioId", usuario.getId());
+                    session.setAttribute("usuarioNome", usuario.getNome());
+
                     response.sendRedirect("dashboard-usuario.html");
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
@@ -41,7 +51,11 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("coach", coach);
                     session.setAttribute("tipoUsuario", "coach");
-                    response.sendRedirect("dashboard-coach.html.jsp");
+                    session.setAttribute("coachId", coach.getId());
+                    session.setAttribute("coachNome", coach.getNome());
+
+                    // Corrigir o redirecionamento para dashboard-coach.html, sem o .jsp
+                    response.sendRedirect("dashboard-coach.html");
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -52,7 +66,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("mensagem", "Erro no servidor.");
+            request.setAttribute("mensagem", "Erro no servidor: " + e.getMessage());
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }

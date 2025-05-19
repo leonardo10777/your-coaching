@@ -50,7 +50,7 @@
                 </c:forEach>
             </tbody>
         </table>
-        <a href="index.html" class="btn btn-primary">Voltar</a>
+        <a href="admin.html" class="btn btn-primary">Voltar</a>
     </div>
 </body>
 </html>

@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lista de Coaches</title>
+    <title>Lista de Feedbacks</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -94,15 +95,6 @@
             font-size: 0.9rem;
         }
 
-        .btn-edit {
-            background-color: var(--info-color);
-            color: var(--white);
-        }
-
-        .btn-edit:hover {
-            background-color: var(--hover-info);
-        }
-
         .btn-delete {
             background-color: var(--secondary-color);
             color: var(--white);
@@ -166,6 +158,16 @@
             margin: 20px 0;
         }
 
+        .rating {
+            color: #FFD700;
+            white-space: nowrap;
+        }
+
+        .feedback-comment {
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+
         @media (max-width: 768px) {
             .data-container {
                 padding: 15px;
@@ -185,21 +187,23 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .feedback-comment {
+                max-width: 150px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="data-container">
-        <h1><i class="fas fa-users icon"></i>Lista de Coaches</h1>
+        <h1><i class="fas fa-comments icon"></i>Lista de Feedbacks</h1>
 
         <%-- Mensagens de status --%>
         <c:if test="${not empty param.success}">
             <div class="status-message success">
                 <i class="fas fa-check-circle icon"></i>
                 <c:choose>
-                    <c:when test="${param.success == 'updated'}">Coach atualizado com sucesso!</c:when>
-                    <c:when test="${param.success == 'deleted'}">Coach removido com sucesso!</c:when>
-                    <c:when test="${param.success == 'created'}">Coach cadastrado com sucesso!</c:when>
+                    <c:when test="${param.success == 'deleted'}">Feedback removido com sucesso!</c:when>
                 </c:choose>
             </div>
         </c:if>
@@ -208,51 +212,52 @@
             <div class="status-message error">
                 <i class="fas fa-exclamation-circle icon"></i>
                 <c:choose>
-                    <c:when test="${param.error == 'not_found'}">Coach não encontrado</c:when>
-                    <c:when test="${param.error == 'load_error'}">Erro ao carregar dados</c:when>
-                    <c:when test="${param.error == 'delete_error'}">Erro ao excluir coach</c:when>
+                    <c:when test="${param.error == 'delete_error'}">Erro ao excluir feedback</c:when>
                 </c:choose>
             </div>
         </c:if>
 
-        <c:if test="${not empty emptyMessage}">
+        <c:if test="${empty feedbacks}">
             <div class="empty-message">
-                <i class="fas fa-info-circle icon"></i> ${emptyMessage}
+                <i class="fas fa-info-circle icon"></i> Nenhum feedback encontrado
             </div>
         </c:if>
 
-        <c:if test="${not empty coaches}">
+        <c:if test="${not empty feedbacks}">
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                            <th>Curso</th>
-                            <th>Área</th>
+                            <th>Coach</th>
+                            <th>Usuário</th>
+                            <th>Avaliação</th>
+                            <th>Comentário</th>
+                            <th>Data</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="coach" items="${coaches}">
+                        <c:forEach var="feedback" items="${feedbacks}">
                             <tr>
-                                <td>${coach.id}</td>
-                                <td>${coach.nome}</td>
-                                <td>${coach.email}</td>
-                                <td class="phone-number">${coach.telefone}</td>
-                                <td>${coach.curso}</td>
-                                <td>${coach.area}</td>
+                                <td>${feedback.id}</td>
+                                <td>${feedback.coachNome}</td>
+                                <td>${feedback.usuarioNome}</td>
+                                <td class="rating">
+                                    <c:forEach begin="1" end="5" var="i">
+                                        <i class="fas fa-star ${i <= feedback.nota ? 'active' : ''}"></i>
+                                    </c:forEach>
+                                </td>
+                                <td class="feedback-comment">${feedback.comentario}</td>
+                                <td>
+                                    <fmt:formatDate value="${feedback.dataFeedback}" pattern="dd/MM/yyyy HH:mm"/>
+                                </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="${pageContext.request.contextPath}/edit-coach?id=${coach.id}" class="btn btn-edit">
-                                            <i class="fas fa-edit icon"></i> Editar
-                                        </a>
-                                        <form action="${pageContext.request.contextPath}/delete-coach" method="post"
-                                              onsubmit="return confirm('Tem certeza que deseja excluir este coach?');"
+                                        <form action="delete-feedback" method="post"
+                                              onsubmit="return confirm('Tem certeza que deseja excluir este feedback?');"
                                               style="display:inline;">
-                                            <input type="hidden" name="id" value="${coach.id}">
+                                            <input type="hidden" name="id" value="${feedback.id}">
                                             <button type="submit" class="btn btn-delete">
                                                 <i class="fas fa-trash-alt icon"></i> Excluir
                                             </button>
@@ -272,23 +277,10 @@
     </div>
 
     <script>
-        // Aplicar máscara de telefone
-        document.querySelectorAll('.phone-number').forEach(td => {
-            const phone = td.textContent.trim();
-            if (phone) {
-                const cleaned = phone.replace(/\D/g, '');
-                if (cleaned.length === 11) {
-                    td.textContent = cleaned.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
-                } else if (cleaned.length === 10) {
-                    td.textContent = cleaned.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
-                }
-            }
-        });
-
         // Confirmar exclusão
         document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', function(e) {
-                if (!confirm('Tem certeza que deseja excluir este coach permanentemente?')) {
+                if (!confirm('Tem certeza que deseja excluir este feedback permanentemente?')) {
                     e.preventDefault();
                 }
             });
