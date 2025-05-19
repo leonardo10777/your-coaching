@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // ... (código anterior mantido) ...
-
-    // Sistema de avaliações interativo
     const addReviewBtn = document.getElementById('add-review-btn');
     const reviewModal = document.getElementById('review-modal');
     const closeModalBtns = document.querySelectorAll('.close-modal');
@@ -9,28 +6,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const reviewForm = document.getElementById('review-form');
     const ratingValue = document.getElementById('rating-value');
 
-    // Abrir modal de avaliação
     if (addReviewBtn) {
         addReviewBtn.addEventListener('click', function() {
             reviewModal.style.display = 'block';
         });
     }
 
-    // Fechar modais
     closeModalBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             this.closest('.modal').style.display = 'none';
         });
     });
 
-    // Fechar modal ao clicar fora
     window.addEventListener('click', function(e) {
         if (e.target.classList.contains('modal')) {
             e.target.style.display = 'none';
         }
     });
 
-    // Classificação por estrelas (modal)
     starInputs.forEach(star => {
         star.addEventListener('click', function() {
             const value = parseInt(this.getAttribute('data-value'));
@@ -46,24 +39,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Enviar avaliação
     if (reviewForm) {
         reviewForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const rating = ratingValue.value;
             const reviewText = document.getElementById('review-text').value;
 
-            // Aqui você enviaria os dados para o servidor
             console.log('Nova avaliação:', { rating, review: reviewText });
-
-            // Fechar modal e recarregar avaliações
             reviewModal.style.display = 'none';
             alert('Avaliação enviada com sucesso!');
-            // location.reload(); // Recarregar a página após envio
         });
     }
 
-    // Curtir avaliação
     const likeButtons = document.querySelectorAll('.btn-like');
     likeButtons.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -84,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Sistema de disponibilidade
     const monthSelect = document.getElementById('availability-month');
     const yearSelect = document.getElementById('availability-year');
     const calendarGrid = document.querySelector('.calendar-grid');
@@ -94,9 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const slotForm = document.getElementById('slot-form');
     const addSlotBtn = document.getElementById('add-slot-btn');
 
-    // Gerar calendário
     function generateCalendar(month, year) {
-        // Limpar calendário existente (exceto cabeçalhos)
         while (calendarGrid.children.length > 7) {
             calendarGrid.removeChild(calendarGrid.lastChild);
         }
@@ -104,20 +88,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // Adicionar dias vazios no início
         for (let i = 0; i < firstDay; i++) {
             const emptyDay = document.createElement('div');
             emptyDay.className = 'calendar-day empty';
             calendarGrid.appendChild(emptyDay);
         }
 
-        // Adicionar dias do mês
         for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-day';
             dayElement.textContent = day;
 
-            // Simular disponibilidade (na prática, viria do servidor)
             const random = Math.random();
             if (random > 0.7) {
                 dayElement.classList.add('booked');
@@ -128,21 +109,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             dayElement.addEventListener('click', function() {
-                if (this.classList.contains('available') {
-                    // Remover seleção anterior
+                if (this.classList.contains('available')) {
                     document.querySelectorAll('.calendar-day.selected').forEach(el => {
                         el.classList.remove('selected');
                     });
 
-                    // Selecionar este dia
                     this.classList.add('selected');
 
-                    // Atualizar data selecionada
                     const selectedDate = new Date(year, month, day);
                     const formattedDate = selectedDate.toLocaleDateString('pt-BR');
                     selectedDateElement.textContent = formattedDate;
 
-                    // Carregar horários disponíveis (simulado)
                     loadTimeSlots(selectedDate);
                 }
             });
@@ -151,12 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Carregar horários disponíveis
     function loadTimeSlots(date) {
-        // Limpar horários existentes
         timeSlotsGrid.innerHTML = '';
 
-        // Simular horários disponíveis (na prática, viria do servidor)
         const hours = [9, 10, 11, 14, 15, 16];
         const minutes = ['00', '30'];
 
@@ -167,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 slotElement.className = 'time-slot';
                 slotElement.textContent = time;
 
-                // Simular alguns horários reservados
                 if (Math.random() > 0.7) {
                     slotElement.classList.add('booked');
                 } else {
@@ -186,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Mudar mês/ano
     if (monthSelect && yearSelect) {
         monthSelect.addEventListener('change', updateCalendar);
         yearSelect.addEventListener('change', updateCalendar);
@@ -197,18 +169,15 @@ document.addEventListener('DOMContentLoaded', function() {
             generateCalendar(month, year);
         }
 
-        // Inicializar calendário
         updateCalendar();
     }
 
-    // Adicionar novo horário
     if (addSlotBtn) {
         addSlotBtn.addEventListener('click', function() {
             slotModal.style.display = 'block';
         });
     }
 
-    // Enviar novo horário
     if (slotForm) {
         slotForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -216,9 +185,25 @@ document.addEventListener('DOMContentLoaded', function() {
             const time = document.getElementById('slot-time').value;
             const duration = document.getElementById('slot-duration').value;
 
-            // Aqui você enviaria os dados para o servidor
             console.log('Novo horário:', { date, time, duration });
-
-            // Fechar modal e recarregar disponibilidade
             slotModal.style.display = 'none';
-            alert('Horário adicionado com su
+            alert('Horário adicionado com sucesso');
+        });
+    }
+
+    const coachImage = document.querySelector('.profile-image img');
+    if (coachImage) {
+        coachImage.addEventListener('error', function() {
+            this.src = 'img/default-coach.jpg';
+            this.alt = 'Foto padrão do coach';
+        });
+    }
+
+    const clientImages = document.querySelectorAll('.client-image img');
+    clientImages.forEach(img => {
+        img.addEventListener('error', function() {
+            this.src = 'img/default-user.jpg';
+            this.alt = 'Foto padrão do cliente';
+        });
+    });
+});
