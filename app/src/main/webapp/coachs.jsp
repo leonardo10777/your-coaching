@@ -131,6 +131,35 @@
             max-width: 700px;
             margin: 0 auto 40px;
         }
+
+        .btn-view-profile {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px 0;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-view-profile:hover {
+            background-color: var(--primary-color);
+            color: var(--lighter-color);
+        }
+
+        .coach-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .coach-actions a {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -185,8 +214,9 @@
                     </div>
                     <div class="coach-body">
                         <p class="coach-description">${coach.descricaoprofissional}</p>
-                        <a href="agendar-consulta?coachId=${coach.id}" class="btn-know-more">Agendar Consulta</a>
-                    </div>
+                        <div class="coach-actions">
+                            <a href="agendar-consulta?coachId=${coach.id}" class="btn-know-more">Agendar Consulta</a>
+                            <a href="${pageContext.request.contextPath}/perfil-coach?coachId=${coach.id}" class="btn-view-profile">Visualizar Perfil</a>                    </div>
                     <div class="coach-footer">
                             <span class="coach-price">
                                 <fmt:setLocale value="pt_BR"/>
