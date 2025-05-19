@@ -160,6 +160,97 @@
         .coach-actions a {
             flex: 1;
         }
+
+        /* Estilos para a seção de comentários */
+        .feedback-section {
+            margin-top: 25px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .feedback-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .feedback-toggle {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .feedback-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .feedback-item {
+            padding: 12px;
+            border-radius: 8px;
+            background-color: var(--light-color);
+            margin-bottom: 10px;
+        }
+
+        .feedback-user {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .feedback-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .feedback-form {
+            margin-top: 15px;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+
+        .feedback-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .feedback-form button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .feedback-container {
+            margin-top: 15px;
+        }
+
+        .no-feedbacks {
+            color: var(--text-light);
+            font-style: italic;
+            padding: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -216,16 +307,51 @@
                         <p class="coach-description">${coach.descricaoprofissional}</p>
                         <div class="coach-actions">
                             <a href="agendar-consulta?coachId=${coach.id}" class="btn-know-more">Agendar Consulta</a>
-                            <a href="${pageContext.request.contextPath}/perfil-coach?coachId=${coach.id}" class="btn-view-profile">Visualizar Perfil</a>                    </div>
+                            <a href="${pageContext.request.contextPath}/perfil-coach?coachId=${coach.id}" class="btn-view-profile">Visualizar Perfil</a>
+                        </div>
+
+                        <!-- Seção de Feedback -->
+                        <div class="feedback-section">
+                            <div class="feedback-title">
+                                <span>Comentários</span>
+                            </div>
+
+                            <div class="feedback-container" id="feedback-container-${coach.id}">
+                                <div class="feedback-list">
+                                    <c:choose>
+                                        <c:when test="${not empty feedbacks[coach.id] && feedbacks[coach.id].size() > 0}">
+                                            <c:forEach var="feedback" items="${feedbacks[coach.id]}">
+                                                <div class="feedback-item">
+                                                    <div class="feedback-user">${feedback.usuarioNome}</div>
+                                                    <div class="feedback-text">${feedback.comentario}</div>
+                                                </div>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="no-feedbacks">Nenhum comentário ainda. Seja o primeiro a comentar!</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+
+                                <form action="${pageContext.request.contextPath}/addFeedback" method="post" class="feedback-form">
+                                    <input type="hidden" name="coachId" value="${coach.id}">
+                                    <textarea name="comentario" placeholder="Deixe seu comentário sobre este coach..." required></textarea>
+                                    <button type="submit">Enviar Comentário</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Fim da Seção de Feedback -->
+                    </div>
+
                     <div class="coach-footer">
-                            <span class="coach-price">
-                                <fmt:setLocale value="pt_BR"/>
-                                <fmt:formatNumber value="${coach.preco}" type="currency"/>
-                            </span>
+                        <span class="coach-price">
+                            <fmt:setLocale value="pt_BR"/>
+                            <fmt:formatNumber value="${coach.preco}" type="currency"/>
+                        </span>
                         <span class="coach-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.9</span>
-                            </span>
+                            <i class="fas fa-star"></i>
+                            <span>4.9</span>
+                        </span>
                     </div>
                 </div>
             </c:forEach>
@@ -243,7 +369,7 @@
 
 <script src="js/script.js"></script>
 <script>
-    // Fallback para imagens que não carregarem
+            // Fallback para imagens que não carregarem
     document.addEventListener('DOMContentLoaded', function() {
         const images = document.querySelectorAll('.coach-image');
         images.forEach(img => {
@@ -251,6 +377,11 @@
                 this.src = '${pageContext.request.contextPath}/img/default-coach.jpg';
             });
         });
+
+        // Exibir mensagem de erro se houver
+        if ('${error}' !== '') {
+            alert('${error}');
+        }
     });
 </script>
 </body>

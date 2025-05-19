@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liberte seu Potencial | Coaching Financeiro, Motivacional e Profissional</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .modal {
+        overflow-y: auto;
+        max-height: 90vh;
+    }
+    .modal-content {
+        max-height: 100%;
+        overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="header-content">
+      <a href="index.html" class="logo">
+        <img src="img/logo.png" alt="Liberte seu Potencial" class="logo-img">
+        <h1>Your Coaching</h1>
+        <div class="logo-text"></div>
+      </a>
+
+      <div class="header-buttons">
+        <button id="openRegisterModal" class="btn btn-outline">Registrar Usuário</button>
+        <button id="openCoachModal" class="btn btn-outline">Registrar Coach</button>
+        <a href="/find-all-users" class="btn btn-outline">Ver Usuários</a>
+        <a href="/find-all-coaches" class="btn btn-outline">Ver Coachs</a>
+        <a href="/list-all-feedbacks" class="btn btn-outline">Ver feedbacks</a>
+        <a href="logout" class="btn btn-outline">Sair</a>
+      </div>
+
+      <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Modal de Registro de Usuário -->
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2>Registrar Usuário</h2>
+    <form id="registerForm" action="create-user" method="post">
+      <div class="form-group">
+        <label for="reg-name">Nome completo</label>
+        <input type="text" id="reg-name" name="reg-name" placeholder="Seu nome" pattern="[A-Za-zÀ-ú\s]{5,100}" title="Mínimo 5 caracteres (apenas letras)" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" name="reg-email" placeholder="Seu email" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-telefone">Telefone</label>
+        <input type="tel" id="reg-telefone" name="reg-telefone" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{5}-\d{4}" title="Formato: (00) 00000-0000" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Senha</label>
+        <input type="password" id="reg-password" name="reg-password" placeholder="Crie uma senha" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Mínimo 8 caracteres (letras e números)" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-nascimento">Data de Nascimento</label>
+        <input type="date" id="reg-nascimento" name="reg-nascimento" max="2023-12-31" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Criar conta</button>
+      <div class="login-link">
+        <p>Já possui conta? <a href="#" id="switchToLogin">Fazer login</a></p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de Registro de Coach -->
+<div id="coachModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2>Registrar Coach</h2>
+    <form id="coachForm" action="create-coach" method="post" enctype="multipart/form-data">
+      <div class="form-group"><label for="coach-nome">Nome completo</label><input type="text" id="coach-nome" name="coach-nome" required></div>
+      <div class="form-group"><label for="coach-email">Email</label><input type="email" id="coach-email" name="coach-email" required></div>
+      <div class="form-group"><label for="coach-telefone">Telefone</label><input type="tel" id="coach-telefone" name="coach-telefone" pattern="\(\d{2}\) \d{5}-\d{4}" required></div>
+      <div class="form-group"><label for="coach-password">Senha</label><input type="password" id="coach-password" name="coach-password" minlength="8" required></div>
+      <div class="form-group"><label for="coach-nascimento">Data de Nascimento</label><input type="date" id="coach-nascimento" name="coach-nascimento" required></div>
+      <div class="form-group"><label for="coach-curso">Curso</label><input type="text" id="coach-curso" name="coach-curso" required></div>
+      <div class="form-group"><label for="coach-area">Área</label><input type="text" id="coach-area" name="coach-area" required></div>
+      <div class="form-group"><label for="coach-desc">Descrição profissional</label><textarea id="coach-desc" name="coach-desc" rows="4" required></textarea></div>
+      <div class="form-group"><label for="coach-preco">Preço</label><input type="text" id="coach-preco" name="coach-preco" required></div>
+      <div class="form-group"><label for="coach-image">Image</label><input type="file" id="coach-image" name="coach-image" required></div>
+      <button type="submit" class="btn btn-primary">Criar conta Coach</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+  // Máscara de telefone
+  document.getElementById('reg-telefone')?.addEventListener('input', formatPhone);
+  document.getElementById('coach-telefone')?.addEventListener('input', formatPhone);
+
+  function formatPhone(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) value = value.substring(0, 11);
+      if (value.length > 0) {
+          value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}`;
+      }
+      e.target.value = value;
+  }
+
+  // Mostrar modais
+  document.getElementById("openRegisterModal").onclick = () => {
+      document.getElementById("registerModal").style.display = "block";
+  };
+  document.getElementById("openCoachModal").onclick = () => {
+      document.getElementById("coachModal").style.display = "block";
+  };
+  document.querySelectorAll(".close-modal").forEach(btn => {
+      btn.onclick = () => {
+          btn.closest(".modal").style.display = "none";
+      };
+  });
+
+  // Mensagens
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('sucesso')) {
+      alert('Cadastro realizado com sucesso!');
+  } else if (urlParams.has('erro')) {
+      alert('Erro no cadastro. Verifique os dados e tente novamente.');
+  }
+</script>
+</body>
+</html>

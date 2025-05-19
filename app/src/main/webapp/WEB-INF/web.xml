@@ -4,8 +4,9 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
 
-  <display-name>car-store</display-name>
+  <display-name>your-coaching</display-name>
 
+  <!-- Configuração do H2 -->
   <listener>
     <listener-class>org.h2.server.web.DbStarter</listener-class>
   </listener>
@@ -19,6 +20,15 @@
   <servlet-mapping>
     <servlet-name>H2Console</servlet-name>
     <url-pattern>/console/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddFeedbackServlet</servlet-name>
+    <servlet-class>YourCoaching.servlet.AddFeedbackServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddFeedbackServlet</servlet-name>
+    <url-pattern>/addFeedback</url-pattern>
   </servlet-mapping>
 
 </web-app>
