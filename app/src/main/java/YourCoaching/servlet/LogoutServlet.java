@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 
@@ -22,10 +21,23 @@ public class LogoutServlet extends HttpServlet {
             session.invalidate();
         }
 
-        // Define mensagem de sucesso
-        request.setAttribute("message", "Logout realizado com sucesso");
+        // Verifica se deve mostrar mensagem via forward ou fazer redirect simples
+        String showMessage = request.getParameter("showMessage");
 
-        // Redireciona para a página de login
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        if ("true".equals(showMessage)) {
+            // Comportamento original - com mensagem de sucesso
+            request.setAttribute("message", "Logout realizado com sucesso");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            // Comportamento novo - redirect simples
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Permite logout via POST também
+        doGet(request, response);
     }
 }

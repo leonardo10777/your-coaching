@@ -12,20 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Redirecionar para a página de login se acessada via GET
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-        String tipoUsuario = request.getParameter("tipoUsuario"); // "usuario" ou "coach"
+        String tipoUsuario = request.getParameter("tipoUsuario");
 
         try {
             if ("usuario".equals(tipoUsuario)) {
@@ -35,12 +33,9 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("usuario", usuario);
                     session.setAttribute("tipoUsuario", "usuario");
-
-                    // Adicionar explicitamente ID e nome do usuário na sessão para uso no AddFeedbackServlet
                     session.setAttribute("usuarioId", usuario.getId());
                     session.setAttribute("usuarioNome", usuario.getNome());
-
-                    response.sendRedirect("dashboard-usuario.html");
+                    response.sendRedirect("dashboard-usuario.jsp");
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -54,9 +49,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("tipoUsuario", "coach");
                     session.setAttribute("coachId", coach.getId());
                     session.setAttribute("coachNome", coach.getNome());
-
-                    // Corrigir o redirecionamento para dashboard-coach.html, sem o .jsp
-                    response.sendRedirect("dashboard-coach.html");
+                    response.sendRedirect("dashboard-coach"); // Redirecionar para o servlet
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);

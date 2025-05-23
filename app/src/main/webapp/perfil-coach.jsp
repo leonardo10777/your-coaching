@@ -182,14 +182,14 @@
                 <ul>
                     <c:choose>
                         <c:when test="${sessionScope.tipoUsuario == 'coach'}">
-                            <li><a href="dashboard-coach.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                            <li><a href="dashboard-coach" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
                             <li><a href="perfil-coach?coachId=${coach.id}" class="active"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                            <li><a href="agendamentos-coach.html"><i class="fas fa-calendar"></i> Agendamentos</a></li>
+                            <li><a href="dashboard-coach"><i class="fas fa-calendar"></i> Agendamentos</a></li>
                         </c:when>
                         <c:otherwise>
-                            <li><a href="dashboard-usuario.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                            <li><a href="dashboard-usuario.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
                             <li><a href="buscar-coaches.html"><i class="fas fa-search"></i> Buscar Coaches</a></li>
-                            <li><a href="meus-agendamentos.jsp"><i class="fas fa-calendar"></i> Meus Agendamentos</a></li>
+                            <li><a href="meus-agendamentos"><i class="fas fa-calendar"></i> Meus Agendamentos</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
@@ -230,7 +230,15 @@
                     <span class="reviews">(128 avaliações)</span>
                 </div>
                 <div class="price">
-                    R$ ${coach.preco}
+                    <c:choose>
+                        <c:when test="${sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id == coach.id}">
+                            <fmt:setLocale value="pt_BR"/>
+                            <fmt:formatNumber value="${coach.preco}" type="currency"/>
+                        </c:when>
+                        <c:otherwise>
+                            R$ ${coach.preco}
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <c:if test="${sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id == coach.id}">
                     <div class="profile-actions">
@@ -242,83 +250,85 @@
         </div>
 
         <div class="profile-content">
-            <section class="about-section">
-                <h2>Sobre Mim</h2>
-                <p>${coach.descricaoprofissional}</p>
+            <div class="profile-main">
+                <section class="about-section">
+                    <h2>Sobre Mim</h2>
+                    <p>${coach.descricaoprofissional}</p>
 
-                <div class="details-grid">
-                    <div class="detail-item">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Formação: ${coach.curso}</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-birthday-cake"></i>
-                        <span>Data de Nascimento:
-                            <fmt:parseDate value="${coach.dataNascimento}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
-                            <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy" />
-                        </span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email: ${coach.email}</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-phone"></i>
-                        <span>Telefone: ${coach.telefone}</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Seção de Agendamento (apenas para usuários logados que não sejam o próprio coach) -->
-            <c:if test="${sessionScope.tipoUsuario == 'usuario' || (sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id != coach.id)}">
-                <section class="booking-section">
-                    <h2><i class="fas fa-calendar-plus"></i> Agendar Consulta</h2>
-
-                    <!-- Mensagens de sucesso ou erro -->
-                    <c:if test="${not empty sessionScope.mensagemSucesso}">
-                        <div class="alert alert-success">
-                            <i class="fas fa-check-circle"></i> ${sessionScope.mensagemSucesso}
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Formação: ${coach.curso}</span>
                         </div>
-                        <c:remove var="mensagemSucesso" scope="session" />
-                    </c:if>
-
-                    <c:if test="${not empty sessionScope.mensagemErro}">
-                        <div class="alert alert-error">
-                            <i class="fas fa-exclamation-triangle"></i> ${sessionScope.mensagemErro}
+                        <div class="detail-item">
+                            <i class="fas fa-birthday-cake"></i>
+                            <span>Data de Nascimento:
+                                <fmt:parseDate value="${coach.dataNascimento}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
+                                <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy" />
+                            </span>
                         </div>
-                        <c:remove var="mensagemErro" scope="session" />
-                    </c:if>
-
-                    <form action="agendar" method="post" class="booking-form">
-                        <input type="hidden" name="coachId" value="${coach.id}">
-
-                        <div class="form-group">
-                            <label for="data">
-                                <i class="fas fa-calendar"></i> Data da Consulta:
-                            </label>
-                            <input type="date" id="data" name="data" class="form-control" required
-                                   min="<%= java.time.LocalDate.now() %>">
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email: ${coach.email}</span>
                         </div>
-
-                        <div class="form-group">
-                            <label for="horario">
-                                <i class="fas fa-clock"></i> Horário:
-                            </label>
-                            <input type="time" id="horario" name="horario" class="form-control" required
-                                   min="08:00" max="19:00" step="1800">
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span>Telefone: ${coach.telefone}</span>
                         </div>
-
-                        <button type="submit" class="booking-btn">
-                            <i class="fas fa-calendar-check"></i> Confirmar Agendamento
-                        </button>
-                    </form>
-
-                    <div style="margin-top: 15px; text-align: center; color: #666; font-size: 14px;">
-                        <i class="fas fa-info-circle"></i>
-                        Horário de funcionamento: 08:00 às 19:00 | Agendamentos até 90 dias de antecedência
                     </div>
                 </section>
-            </c:if>
+
+                <!-- Seção de Agendamento (para usuários ou outros coaches) -->
+                <c:if test="${sessionScope.tipoUsuario == 'usuario' || (sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id != coach.id)}">
+                    <section class="booking-section">
+                        <h2><i class="fas fa-calendar-plus"></i> Agendar Consulta</h2>
+
+                        <!-- Mensagens de sucesso ou erro -->
+                        <c:if test="${not empty sessionScope.mensagemSucesso}">
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle"></i> ${sessionScope.mensagemSucesso}
+                            </div>
+                            <c:remove var="mensagemSucesso" scope="session" />
+                        </c:if>
+
+                        <c:if test="${not empty sessionScope.mensagemErro}">
+                            <div class="alert alert-error">
+                                <i class="fas fa-exclamation-triangle"></i> ${sessionScope.mensagemErro}
+                            </div>
+                            <c:remove var="mensagemErro" scope="session" />
+                        </c:if>
+
+                        <form action="agendar" method="post" class="booking-form">
+                            <input type="hidden" name="coachId" value="${coach.id}">
+
+                            <div class="form-group">
+                                <label for="data">
+                                    <i class="fas fa-calendar"></i> Data da Consulta:
+                                </label>
+                                <input type="date" id="data" name="data" class="form-control" required
+                                       min="<%= java.time.LocalDate.now() %>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="horario">
+                                    <i class="fas fa-clock"></i> Horário:
+                                </label>
+                                <input type="time" id="horario" name="horario" class="form-control" required
+                                       min="08:00" max="19:00" step="1800">
+                            </div>
+
+                            <button type="submit" class="booking-btn">
+                                <i class="fas fa-calendar-check"></i> Confirmar Agendamento
+                            </button>
+                        </form>
+
+                        <div style="margin-top: 15px; text-align: center; color: #666; font-size: 14px;">
+                            <i class="fas fa-info-circle"></i>
+                            Horário de funcionamento: 08:00 às 19:00 | Agendamentos até 90 dias de antecedência
+                        </div>
+                    </section>
+                </c:if>
+            </div>
         </div>
     </section>
 </main>
@@ -340,6 +350,8 @@
             img.addEventListener('error', function() {
                 if (this.closest('.profile-image')) {
                     this.src = '${pageContext.request.contextPath}/img/default-coach.jpg';
+                } else if (this.classList.contains('client-image')) {
+                    this.src = '${pageContext.request.contextPath}/img/default-user.jpg';
                 }
             });
         });
@@ -359,6 +371,8 @@
             }
         });
 
+        // Configurações específicas para agendamento (apenas para não-coaches)
+        <c:if test="${sessionScope.tipoUsuario != 'coach' || sessionScope.coach.id != coach.id}">
         // Configurar data mínima como hoje
         const dataInput = document.getElementById('data');
         if (dataInput) {
@@ -396,6 +410,7 @@
                 }, 500);
             }, 5000);
         });
+        </c:if>
     });
 </script>
 </body>
