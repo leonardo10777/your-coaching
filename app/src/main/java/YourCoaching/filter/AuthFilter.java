@@ -33,7 +33,8 @@ public class AuthFilter implements Filter {
                 requestURI.endsWith("contato.html") ||
                 requestURI.contains(".css") ||                     // Libera todos os CSS
                 requestURI.contains(".js") ||                      // Libera todos os JS
-                requestURI.contains(".png") ||                     // Libera imagens
+                requestURI.contains(".png") ||
+                requestURI.contains(".jpg") ||// Libera imagens
                 requestURI.equals(contextPath + "/")) {
             chain.doFilter(request, response);
             return;
