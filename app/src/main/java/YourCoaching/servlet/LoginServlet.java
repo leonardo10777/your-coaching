@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("usuarioId", usuario.getId());
                     session.setAttribute("usuarioNome", usuario.getNome());
 
-                    response.sendRedirect("dashboard-usuario.html");
+                    response.sendRedirect("dashboard-usuario.jsp");
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -54,8 +54,8 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("coachId", coach.getId());
                     session.setAttribute("coachNome", coach.getNome());
 
-                    // Corrigir o redirecionamento para dashboard-coach.html, sem o .jsp
-                    response.sendRedirect("dashboard-coach.html");
+                    // Corrigir o redirecionamento para dashboard-coach.jsp, sem o .jsp
+                    response.sendRedirect("dashboard-coach.jsp");
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);

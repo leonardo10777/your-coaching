@@ -21,9 +21,9 @@ public class ListCoachesForUsersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Verificar se o usuário está logado
+        // Verificação mais robusta da sessão
         if (request.getSession().getAttribute("usuario") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
@@ -33,20 +33,38 @@ public class ListCoachesForUsersServlet extends HttpServlet {
 
             List<Coach> coaches = coachDao.findAllCoaches();
             Map<Integer, List<Feedback>> feedbacksPorCoach = new HashMap<>();
+            Map<Integer, Double> mediaAvaliacoes = new HashMap<>();
 
+            // Processar cada coach
             for (Coach coach : coaches) {
                 List<Feedback> feedbacks = feedbackDao.findFeedbacksByCoachId(coach.getId());
+
+                // Calcular média das avaliações
+                if (feedbacks != null && !feedbacks.isEmpty()) {
+                    double soma = 0;
+                    for (Feedback f : feedbacks) {
+                        soma += f.getRating();
+                    }
+                    double media = soma / feedbacks.size();
+                    mediaAvaliacoes.put(coach.getId(), media);
+                } else {
+                    mediaAvaliacoes.put(coach.getId(), 0.0);
+                }
+
                 feedbacksPorCoach.put(coach.getId(), feedbacks);
             }
 
             request.setAttribute("coaches", coaches);
             request.setAttribute("feedbacks", feedbacksPorCoach);
-            request.getRequestDispatcher("coachs.jsp").forward(request, response);
+            request.setAttribute("medias", mediaAvaliacoes);
+
+            // Corrigido para usar o nome correto do arquivo JSP
+            request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao listar coaches: " + e.getMessage());
+            request.setAttribute("error", "Erro ao carregar lista de coaches: " + e.getMessage());
+            request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
         }
     }
 }
