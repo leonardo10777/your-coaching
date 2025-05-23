@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CoachDao {
 
     public void createCoach(Coach coach) {
@@ -145,10 +146,6 @@ public class CoachDao {
             throw new RuntimeException("Error finding coach by email and password", e);
         }
         return null;
-    }
-
-    public Coach findById(int id) {
-        return findCoachById(id); // Reutiliza o método existente
     }
 
     public void createTableIfNotExists() {

@@ -15,6 +15,7 @@ public class Coach {
     private String preco;
     private String image;
 
+
     public Coach(String nome, String email, String telefone, String senha, LocalDate dataNascimento,
                  String curso, String area, String descricaoprofissional, String preco) {
         this.nome = nome;

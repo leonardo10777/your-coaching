@@ -12,6 +12,7 @@ public class Feedback {
     public Feedback() {
     }
 
+
     public Feedback(int id, int coachId, int usuarioId, String usuarioNome, String comentario) {
         this.id = id;
         this.coachId = coachId;

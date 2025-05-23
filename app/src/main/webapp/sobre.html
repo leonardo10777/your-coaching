@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós | Your Coaching</title>
@@ -16,22 +17,21 @@
             <a href="index.html" class="logo">
                 <img src="img/logo.png" alt="Liberte seu Potencial" class="logo-img">
                 <h1>Your Coaching</h1>
-                <div class="logo-text"></div>
             </a>
 
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="sobre.html" class="active"><i class="fas fa-users"></i> Sobre</a></li>
+                    <li><a href="sobre.html" class="active"><i class="fas fa-users"></i> Sobre Nós</a></li>
                     <li><a href="index.html#services"><i class="fas fa-cogs"></i> Serviços</a></li>
                     <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
                 </ul>
             </nav>
 
             <div class="header-buttons">
-                <a href="login.jsp" class="btn btn-primary">Login</a>
-                <a href="index.html#registerModal" class="btn btn-outline">Registrar Usuário</a>
-                <a href="index.html#coachModal" class="btn btn-outline">Registrar Coach</a>
+                <button id="openLoginModal" class="btn btn-primary">Login</button>
+                <button id="openRegisterModal" class="btn btn-outline">Registrar Usuário</button>
+                <button id="openCoachModal" class="btn btn-outline">Registrar Coach</button>
             </div>
 
             <button class="mobile-menu-btn">
@@ -40,6 +40,7 @@
         </div>
     </div>
 </header>
+
 <section class="about-hero">
     <div class="container">
         <h1>Transformando Vidas Através do Coaching</h1>

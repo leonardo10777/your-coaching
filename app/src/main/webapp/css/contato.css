@@ -10,6 +10,7 @@
     text-align: center;
 }
 
+
 .faq-section h2::after {
     content: '';
     display: block;
@@ -71,7 +72,6 @@
     padding: 25px;
     border-left: 4px solid #3498db;
 }
-
 
 .faq-question .rotate {
     transform: rotate(180deg);

@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mainNav.classList.toggle('active');
     });
 
+
     // Fechar menu ao clicar em um link
     const navLinks = document.querySelectorAll('.main-nav a');
     navLinks.forEach(link => {

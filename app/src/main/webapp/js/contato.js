@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // FAQ - Todas as respostas começam fechadas
     const faqQuestions = document.querySelectorAll('.faq-question');
 
+
     faqQuestions.forEach(question => {
         question.addEventListener('click', () => {
             const answer = question.nextElementSibling;

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -39,7 +40,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("usuarioId", usuario.getId());
                     session.setAttribute("usuarioNome", usuario.getNome());
 
-                    response.sendRedirect("dashboard-usuario.jsp");
+                    response.sendRedirect("dashboard-usuario.html");
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -54,8 +55,8 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("coachId", coach.getId());
                     session.setAttribute("coachNome", coach.getNome());
 
-                    // Corrigir o redirecionamento para dashboard-coach.jsp, sem o .jsp
-                    response.sendRedirect("dashboard-coach.jsp");
+                    // Corrigir o redirecionamento para dashboard-coach.html, sem o .jsp
+                    response.sendRedirect("dashboard-coach.html");
                 } else {
                     request.setAttribute("mensagem", "Email ou senha incorretos.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);

@@ -3,6 +3,7 @@
  * Controla as animações de scroll e interações da página
  */
 
+
 document.addEventListener('DOMContentLoaded', function() {
     // =============================================
     // ANIMAÇÕES DE SCROLL

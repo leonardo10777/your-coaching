@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @WebServlet("/list-coaches-for-users")
 public class ListCoachesForUsersServlet extends HttpServlet {
 
@@ -21,9 +22,9 @@ public class ListCoachesForUsersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Verificação mais robusta da sessão
+        // Verificar se o usuário está logado
         if (request.getSession().getAttribute("usuario") == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
@@ -33,38 +34,20 @@ public class ListCoachesForUsersServlet extends HttpServlet {
 
             List<Coach> coaches = coachDao.findAllCoaches();
             Map<Integer, List<Feedback>> feedbacksPorCoach = new HashMap<>();
-            Map<Integer, Double> mediaAvaliacoes = new HashMap<>();
 
-            // Processar cada coach
             for (Coach coach : coaches) {
                 List<Feedback> feedbacks = feedbackDao.findFeedbacksByCoachId(coach.getId());
-
-                // Calcular média das avaliações
-                if (feedbacks != null && !feedbacks.isEmpty()) {
-                    double soma = 0;
-                    for (Feedback f : feedbacks) {
-                        soma += f.getRating();
-                    }
-                    double media = soma / feedbacks.size();
-                    mediaAvaliacoes.put(coach.getId(), media);
-                } else {
-                    mediaAvaliacoes.put(coach.getId(), 0.0);
-                }
-
                 feedbacksPorCoach.put(coach.getId(), feedbacks);
             }
 
             request.setAttribute("coaches", coaches);
             request.setAttribute("feedbacks", feedbacksPorCoach);
-            request.setAttribute("medias", mediaAvaliacoes);
-
-            // Corrigido para usar o nome correto do arquivo JSP
-            request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
+            request.getRequestDispatcher("coachs.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Erro ao carregar lista de coaches: " + e.getMessage());
-            request.getRequestDispatcher("ListCoaches.jsp").forward(request, response);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Erro ao listar coaches: " + e.getMessage());
         }
     }
 }

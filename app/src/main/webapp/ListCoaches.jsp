@@ -1,11 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lista de Coaches | Your Coaching</title>
+
+    <title>Lista de Coaches</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -79,9 +78,9 @@
             background-color: #f1f1f1;
         }
 
-        .rating {
-            color: #FFD700;
-            font-weight: bold;
+        .action-buttons {
+            display: flex;
+            gap: 10px;
         }
 
         .btn {
@@ -96,13 +95,24 @@
             font-size: 0.9rem;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
+        .btn-edit {
+            background-color: var(--info-color);
             color: var(--white);
         }
 
-        .btn-primary:hover {
-            background-color: var(--hover-primary);
+        .btn-edit:hover {
+            background-color: var(--hover-info);
+        }
+
+        .btn-delete {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background-color: var(--hover-secondary);
         }
 
         .btn-back {
@@ -166,132 +176,124 @@
                 padding: 10px 5px;
                 font-size: 0.85rem;
             }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-<div class="data-container">
-    <h1><i class="fas fa-users icon"></i>Coaches Disponíveis</h1>
+    <div class="data-container">
+        <h1><i class="fas fa-users icon"></i>Lista de Coaches</h1>
 
-    <%-- Mensagens de status --%>
-    <c:if test="${not empty param.success}">
-        <div class="status-message success">
-            <i class="fas fa-check-circle icon"></i>
-            <c:choose>
-                <c:when test="${param.success == 'updated'}">Coach atualizado com sucesso!</c:when>
-                <c:when test="${param.success == 'deleted'}">Coach removido com sucesso!</c:when>
-                <c:when test="${param.success == 'created'}">Coach cadastrado com sucesso!</c:when>
-            </c:choose>
-        </div>
-    </c:if>
+        <%-- Mensagens de status --%>
+        <c:if test="${not empty param.success}">
+            <div class="status-message success">
+                <i class="fas fa-check-circle icon"></i>
+                <c:choose>
+                    <c:when test="${param.success == 'updated'}">Coach atualizado com sucesso!</c:when>
+                    <c:when test="${param.success == 'deleted'}">Coach removido com sucesso!</c:when>
+                    <c:when test="${param.success == 'created'}">Coach cadastrado com sucesso!</c:when>
+                </c:choose>
+            </div>
+        </c:if>
 
-    <c:if test="${not empty param.error}">
-        <div class="status-message error">
-            <i class="fas fa-exclamation-circle icon"></i>
-            <c:choose>
-                <c:when test="${param.error == 'not_found'}">Coach não encontrado</c:when>
-                <c:when test="${param.error == 'load_error'}">Erro ao carregar dados</c:when>
-                <c:when test="${param.error == 'delete_error'}">Erro ao excluir coach</c:when>
-            </c:choose>
-        </div>
-    </c:if>
+        <c:if test="${not empty param.error}">
+            <div class="status-message error">
+                <i class="fas fa-exclamation-circle icon"></i>
+                <c:choose>
+                    <c:when test="${param.error == 'not_found'}">Coach não encontrado</c:when>
+                    <c:when test="${param.error == 'load_error'}">Erro ao carregar dados</c:when>
+                    <c:when test="${param.error == 'delete_error'}">Erro ao excluir coach</c:when>
+                </c:choose>
+            </div>
+        </c:if>
 
-    <c:if test="${empty coaches}">
-        <div class="empty-message">
-            <i class="fas fa-info-circle icon"></i> Nenhum coach disponível no momento
-        </div>
-    </c:if>
+        <c:if test="${not empty emptyMessage}">
+            <div class="empty-message">
+                <i class="fas fa-info-circle icon"></i> ${emptyMessage}
+            </div>
+        </c:if>
 
-    <c:if test="${not empty coaches}">
-        <div class="table-container">
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Área</th>
-                    <th>Avaliação</th>
-                    <th>Preço</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="coach" items="${coaches}">
-                    <tr>
-                        <td>${coach.id}</td>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <img src="${pageContext.request.contextPath}/img/${not empty coach.image ? coach.image : 'default-coach.jpg'}"
-                                     alt="Foto do Coach"
-                                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                                    ${coach.nome}
-                            </div>
-                        </td>
-                        <td>${coach.area}</td>
-                        <td class="rating">
-                            <c:choose>
-                                <c:when test="${not empty medias[coach.id] and medias[coach.id] > 0}">
-                                    <fmt:formatNumber value="${medias[coach.id]}" maxFractionDigits="1"/> ★
-                                    (${fn:length(feedbacks[coach.id])} avaliações)
-                                </c:when>
-                                <c:otherwise>
-                                    Sem avaliações
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <fmt:setLocale value="pt_BR"/>
-                            <fmt:formatNumber value="${coach.preco}" type="currency"/>
-                        </td>
-                        <td>
-                            <a href="perfil-coach.jsp?coachId=${coach.id}" class="btn btn-primary">
-                                <i class="fas fa-eye icon"></i> Ver Perfil
-                            </a>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-    </c:if>
+        <c:if test="${not empty coaches}">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Curso</th>
+                            <th>Área</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="coach" items="${coaches}">
+                            <tr>
+                                <td>${coach.id}</td>
+                                <td>${coach.nome}</td>
+                                <td>${coach.email}</td>
+                                <td class="phone-number">${coach.telefone}</td>
+                                <td>${coach.curso}</td>
+                                <td>${coach.area}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="${pageContext.request.contextPath}/edit-coach?id=${coach.id}" class="btn btn-edit">
+                                            <i class="fas fa-edit icon"></i> Editar
+                                        </a>
+                                        <form action="${pageContext.request.contextPath}/delete-coach" method="post"
+                                              onsubmit="return confirm('Tem certeza que deseja excluir este coach?');"
+                                              style="display:inline;">
+                                            <input type="hidden" name="id" value="${coach.id}">
+                                            <button type="submit" class="btn btn-delete">
+                                                <i class="fas fa-trash-alt icon"></i> Excluir
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </c:if>
 
-    <c:choose>
-        <c:when test="${not empty sessionScope.usuario}">
-            <a href="dashboard-usuario.jsp" class="btn btn-back">
-                <i class="fas fa-arrow-left icon"></i> Voltar para Dashboard
-            </a>
-        </c:when>
-        <c:otherwise>
-            <a href="index.html" class="btn btn-back">
-                <i class="fas fa-arrow-left icon"></i> Voltar para Home
-            </a>
-        </c:otherwise>
-    </c:choose>
-</div>
+        <a href="admin.html" class="btn btn-back">
+            <i class="fas fa-arrow-left icon"></i> Voltar para Home
+        </a>
+    </div>
 
-<script>
-    // Formatar números de telefone
-    document.querySelectorAll('td:nth-child(4)').forEach(td => {
-        const phone = td.textContent.trim();
-        if (phone) {
-            const cleaned = phone.replace(/\D/g, '');
-            if (cleaned.length === 11) {
-                td.textContent = cleaned.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
-            } else if (cleaned.length === 10) {
-                td.textContent = cleaned.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+    <script>
+        // Aplicar máscara de telefone
+        document.querySelectorAll('.phone-number').forEach(td => {
+            const phone = td.textContent.trim();
+            if (phone) {
+                const cleaned = phone.replace(/\D/g, '');
+                if (cleaned.length === 11) {
+                    td.textContent = cleaned.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+                } else if (cleaned.length === 10) {
+                    td.textContent = cleaned.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+                }
             }
-        }
-    });
+        });
 
-    // Fallback para imagens
-    document.addEventListener('DOMContentLoaded', function() {
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            img.addEventListener('error', function() {
-                this.src = '${pageContext.request.contextPath}/img/default-coach.jpg';
+        // Confirmar exclusão
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (!confirm('Tem certeza que deseja excluir este coach permanentemente?')) {
+                    e.preventDefault();
+                }
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

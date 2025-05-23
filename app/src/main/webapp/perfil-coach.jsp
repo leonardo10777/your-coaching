@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil do Coach | Your Coaching</title>
@@ -56,7 +57,7 @@
 
             <nav class="main-nav">
                 <ul>
-                    <li><a href="dashboard-coach.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="dashboard-coach.html"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="perfil-coach?coachId=${coach.id}" class="active"><i class="fas fa-user"></i> Meu Perfil</a></li>
                     <li><a href="agendamentos-coach.html"><i class="fas fa-calendar"></i> Agendamentos</a></li>
                     <li><a href="clientes-coach.html"><i class="fas fa-users"></i> Meus Clientes</a></li>

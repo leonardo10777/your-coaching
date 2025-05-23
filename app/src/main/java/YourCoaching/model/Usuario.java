@@ -10,6 +10,7 @@ public class Usuario {
     private String senha;
     private LocalDate dataNascimento;
 
+
     // Construtores
     public Usuario(String nome, String email, String telefone, String senha, LocalDate dataNascimento) {
         this.nome = nome;
@@ -26,10 +27,6 @@ public class Usuario {
         this.telefone = telefone;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
-    }
-
-    public Usuario() {
-
     }
 
     // Getters e Setters
