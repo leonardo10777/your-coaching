@@ -21,49 +21,39 @@ public class AuthFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
         String contextPath = httpRequest.getContextPath();
 
-        // Páginas públicas que não requerem autenticação
-        if (requestURI.endsWith("index.html") ||
+        // URLs públicas (incluindo H2 Console e recursos estáticos)
+        if (requestURI.startsWith(contextPath + "/console") ||  // Libera /console e subpaths
+                requestURI.contains("/h2-console") ||              // Caso o path mude (redundante)
+                requestURI.endsWith("index.html") ||
                 requestURI.endsWith("login.jsp") ||
                 requestURI.endsWith("login") ||
                 requestURI.endsWith("create-user") ||
                 requestURI.endsWith("create-coach") ||
                 requestURI.endsWith("sobre.html") ||
                 requestURI.endsWith("contato.html") ||
-                requestURI.contains("/css/") ||
-                requestURI.contains("/js/") ||
-                requestURI.contains("/img/") ||
+                requestURI.contains(".css") ||                     // Libera todos os CSS
+                requestURI.contains(".js") ||                      // Libera todos os JS
+                requestURI.contains(".png") ||                     // Libera imagens
                 requestURI.equals(contextPath + "/")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Verificar se o usuário está logado
+        // Verificar autenticação para URLs protegidas
         if (session == null || session.getAttribute("tipoUsuario") == null) {
             httpResponse.sendRedirect(contextPath + "/login.jsp");
             return;
         }
 
+        // Restrições por tipo de usuário (usuário/coach)
         String tipoUsuario = (String) session.getAttribute("tipoUsuario");
-
-        // Restrições para usuários comuns
         if (tipoUsuario.equals("usuario")) {
-            // Usuários podem ver perfis de coaches (perfil-coach), mas não podem acessar:
-            // - Dashboard de coach
-            // - Agendamentos de coach
-            if (requestURI.contains("dashboard-coach") ||
-                    requestURI.contains("agendamentos-coach.html")) {
+            if (requestURI.contains("dashboard-coach") || requestURI.contains("agendamentos-coach.html")) {
                 httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
-        }
-
-        // Restrições para coaches
-        if (tipoUsuario.equals("coach")) {
-            if (requestURI.contains("dashboard-usuario.jsp") ||
-                    requestURI.contains("perfil-usuario.html") ||
-                    requestURI.contains("agendamentos.html") ||
-                    requestURI.contains("meus-agendamentos") ||
-                    requestURI.contains("list-coaches-for-users")) {
+        } else if (tipoUsuario.equals("coach")) {
+            if (requestURI.contains("dashboard-usuario.jsp") || requestURI.contains("perfil-usuario.html")) {
                 httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
