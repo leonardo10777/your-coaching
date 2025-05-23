@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Your Coaching</title>
@@ -60,105 +59,107 @@
             color: #e74c3c;
             text-align: center;
             margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fdecea;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">
+<header>
+    <div class="container">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <img src="img/logo.png" alt="Your Coaching" class="logo-img">
+                <h1>Your Coaching</h1>
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="sobre.html"><i class="fas fa-users"></i> Sobre Nós</a></li>
+                    <li><a href="#services"><i class="fas fa-cogs"></i> Serviços</a></li>
+                    <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
+                </ul>
+            </nav>
+            <div class="header-buttons">
+                <a href="login.jsp" class="btn btn-primary">Login</a>
+                <a href="index.html#registerModal" class="btn btn-outline">Registrar Usuário</a>
+                <a href="index.html#coachModal" class="btn btn-outline">Registrar Coach</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <div class="login-container">
+        <h1 class="login-title">Login</h1>
+
+        <% if (request.getAttribute("mensagem") != null) { %>
+        <div class="error-message">
+            <%= request.getAttribute("mensagem") %>
+        </div>
+        <% } %>
+
+        <form action="login" method="post">
+            <div class="form-group">
+                <label for="tipoUsuario">Tipo de Usuário</label>
+                <select id="tipoUsuario" name="tipoUsuario" required>
+                    <option value="">Selecione...</option>
+                    <option value="usuario">Usuário</option>
+                    <option value="coach">Coach</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Seu email" required>
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
+            </div>
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="login-options">
+            <p>Ainda não tem conta?
+                <a href="index.html#registerModal">Registre-se como Usuário</a> ou
+                <a href="index.html#coachModal">Registre-se como Coach</a>
+            </p>
+            <p><a href="#">Esqueci minha senha</a></p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-col">
+                <a href="index.html" class="footer-logo">
                     <img src="img/logo.png" alt="Your Coaching" class="logo-img">
-                    <h1>Your Coaching</h1>
                 </a>
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                        <li><a href="sobre.html"><i class="fas fa-users"></i> Sobre Nós</a></li>
-                        <li><a href="#services"><i class="fas fa-cogs"></i> Serviços</a></li>
-                        <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
-                    </ul>
-                </nav>
-                <div class="header-buttons">
-                    <a href="login.jsp" class="btn btn-primary">Login</a>
-                    <a href="index.html#registerModal" class="btn btn-outline">Registrar Usuário</a>
-                    <a href="index.html#coachModal" class="btn btn-outline">Registrar Coach</a>
-                </div>
+                <p>Transformando vidas através do coaching profissional, financeiro e motivacional.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#services">Serviços</a></li>
+                    <li><a href="sobre.html">Sobre Nós</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contato</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> contato@yourcoaching.com</li>
+                    <li><i class="fas fa-phone"></i> (11) 1234-5678</li>
+                </ul>
             </div>
         </div>
-    </header>
-
-    <main class="container">
-        <div class="login-container">
-            <h1 class="login-title">Login</h1>
-
-            <%-- Exibir mensagem de erro se existir --%>
-            <% if (request.getAttribute("mensagem") != null) { %>
-                <div class="error-message">
-                    <%= request.getAttribute("mensagem") %>
-                </div>
-            <% } %>
-
-            <form action="login" method="post">
-                <div class="form-group">
-                    <label for="tipoUsuario">Tipo de Usuário</label>
-                    <select id="tipoUsuario" name="tipoUsuario" required>
-                        <option value="">Selecione...</option>
-                        <option value="usuario">Usuário</option>
-                        <option value="coach">Coach</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Seu email" required>
-                </div>
-                <div class="form-group">
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
-                </div>
-                <button type="submit" class="btn-login">Entrar</button>
-            </form>
-
-            <div class="login-options">
-                <p>Ainda não tem conta?
-                    <a href="index.html#registerModal">Registre-se como Usuário</a> ou
-                    <a href="index.html#coachModal">Registre-se como Coach</a>
-                </p>
-                <p><a href="#">Esqueci minha senha</a></p>
-            </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Your Coaching. Todos os direitos reservados.</p>
         </div>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-col">
-                    <a href="index.html" class="footer-logo">
-                        <img src="img/logo.png" alt="Your Coaching" class="logo-img">
-                    </a>
-                    <p>Transformando vidas através do coaching profissional, financeiro e motivacional.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Links Rápidos</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="#services">Serviços</a></li>
-                        <li><a href="sobre.html">Sobre Nós</a></li>
-                        <li><a href="contato.html">Contato</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Contato</h4>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> contato@yourcoaching.com</li>
-                        <li><i class="fas fa-phone"></i> (11) 1234-5678</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 Your Coaching. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+    </div>
+</footer>
 </body>
 </html>

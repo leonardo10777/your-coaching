@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://java.sun.com/xml/ns/javaee"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         id="WebApp_ID" version="3.0">
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
 
+  <display-name>YourCoaching</display-name>
 
-  <display-name>your-coaching</display-name>
-
-  <!-- Configuração do H2 -->
+  <!-- Configuração do H2 Database -->
   <listener>
     <listener-class>org.h2.server.web.DbStarter</listener-class>
   </listener>
@@ -23,13 +22,47 @@
     <url-pattern>/console/*</url-pattern>
   </servlet-mapping>
 
+  <!-- Servlet de Feedback -->
   <servlet>
     <servlet-name>AddFeedbackServlet</servlet-name>
     <servlet-class>YourCoaching.servlet.AddFeedbackServlet</servlet-class>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>AddFeedbackServlet</servlet-name>
     <url-pattern>/addFeedback</url-pattern>
   </servlet-mapping>
+
+  <!-- Páginas de boas-vindas -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- Páginas de erro -->
+  <error-page>
+    <error-code>403</error-code>
+    <location>/acesso-negado.jsp</location>
+  </error-page>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error-404.jsp</location>
+  </error-page>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error-500.jsp</location>
+  </error-page>
+
+  <!-- Filtro de Autenticação -->
+  <filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>YourCoaching.filter.AuthFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
 </web-app>

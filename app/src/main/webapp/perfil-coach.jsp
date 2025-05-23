@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil do Coach | Your Coaching</title>
@@ -44,6 +43,130 @@
             align-items: center;
             justify-content: center;
         }
+
+        .booking-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .booking-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .booking-btn:hover {
+            background: #218838;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .about-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .detail-item i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-info {
+                text-align: center;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -57,10 +180,18 @@
 
             <nav class="main-nav">
                 <ul>
-                    <li><a href="dashboard-coach.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                    <li><a href="perfil-coach?coachId=${coach.id}" class="active"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                    <li><a href="agendamentos-coach.html"><i class="fas fa-calendar"></i> Agendamentos</a></li>
-                    <li><a href="clientes-coach.html"><i class="fas fa-users"></i> Meus Clientes</a></li>
+                    <c:choose>
+                        <c:when test="${sessionScope.tipoUsuario == 'coach'}">
+                            <li><a href="dashboard-coach" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                            <li><a href="perfil-coach?coachId=${coach.id}" class="active"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                            <li><a href="dashboard-coach"><i class="fas fa-calendar"></i> Agendamentos</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="dashboard-usuario.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
+                            <li><a href="buscar-coaches.html"><i class="fas fa-search"></i> Buscar Coaches</a></li>
+                            <li><a href="meus-agendamentos"><i class="fas fa-calendar"></i> Meus Agendamentos</a></li>
+                        </c:otherwise>
+                    </c:choose>
                 </ul>
             </nav>
 
@@ -84,9 +215,11 @@
                              alt="Foto padrão do coach">
                     </c:otherwise>
                 </c:choose>
-                <button class="btn-edit-photo">
-                    <i class="fas fa-camera"></i>
-                </button>
+                <c:if test="${sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id == coach.id}">
+                    <button class="btn-edit-photo">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </c:if>
             </div>
             <div class="profile-info">
                 <h1>${coach.nome}</h1>
@@ -97,13 +230,22 @@
                     <span class="reviews">(128 avaliações)</span>
                 </div>
                 <div class="price">
-                    <fmt:setLocale value="pt_BR"/>
-                    <fmt:formatNumber value="${coach.preco}" type="currency"/>
+                    <c:choose>
+                        <c:when test="${sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id == coach.id}">
+                            <fmt:setLocale value="pt_BR"/>
+                            <fmt:formatNumber value="${coach.preco}" type="currency"/>
+                        </c:when>
+                        <c:otherwise>
+                            R$ ${coach.preco}
+                        </c:otherwise>
+                    </c:choose>
                 </div>
-                <div class="profile-actions">
-                    <button class="btn btn-primary">Editar Perfil</button>
-                    <button class="btn btn-outline">Visualizar Como Cliente</button>
-                </div>
+                <c:if test="${sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id == coach.id}">
+                    <div class="profile-actions">
+                        <button class="btn btn-primary">Editar Perfil</button>
+                        <button class="btn btn-outline">Ver Como Cliente</button>
+                    </div>
+                </c:if>
             </div>
         </div>
 
@@ -120,7 +262,7 @@
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-birthday-cake"></i>
-                            <span>Idade:
+                            <span>Data de Nascimento:
                                 <fmt:parseDate value="${coach.dataNascimento}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
                                 <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy" />
                             </span>
@@ -136,150 +278,59 @@
                     </div>
                 </section>
 
-                <section class="testimonials-section">
-                    <div class="section-header">
-                        <h2>Avaliações dos Clientes</h2>
-                        <button id="add-review-btn" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Adicionar Avaliação
-                        </button>
-                    </div>
+                <!-- Seção de Agendamento (para usuários ou outros coaches) -->
+                <c:if test="${sessionScope.tipoUsuario == 'usuario' || (sessionScope.tipoUsuario == 'coach' && sessionScope.coach.id != coach.id)}">
+                    <section class="booking-section">
+                        <h2><i class="fas fa-calendar-plus"></i> Agendar Consulta</h2>
 
-                    <div class="testimonials-list">
-                        <!-- Avaliação 1 -->
-                        <div class="testimonial-card">
-                            <div class="testimonial-header">
-                                <div class="client-info">
-                                    <div class="client-image">
-                                        <img src="${pageContext.request.contextPath}/img/client1.jpg" alt="Cliente">
-                                    </div>
-                                    <div>
-                                        <div class="client-name">Ana Paula Silva</div>
-                                        <div class="testimonial-date">15/03/2023</div>
-                                    </div>
-                                </div>
-                                <div class="testimonial-rating" data-rating="5">
-                                    <span class="star" data-value="1">★</span>
-                                    <span class="star" data-value="2">★</span>
-                                    <span class="star" data-value="3">★</span>
-                                    <span class="star" data-value="4">★</span>
-                                    <span class="star" data-value="5">★</span>
-                                </div>
+                        <!-- Mensagens de sucesso ou erro -->
+                        <c:if test="${not empty sessionScope.mensagemSucesso}">
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle"></i> ${sessionScope.mensagemSucesso}
                             </div>
-                            <div class="testimonial-content">
-                                <p>"O ${coach.nome} me ajudou a sair de uma situação financeira complicada. Em 6 meses já estava com as contas no azul e hoje consigo até investir. Recomendo muito!"</p>
-                            </div>
-                            <div class="testimonial-actions">
-                                <button class="btn-like"><i class="far fa-thumbs-up"></i> <span>12</span></button>
-                                <button class="btn-reply">Responder</button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+                            <c:remove var="mensagemSucesso" scope="session" />
+                        </c:if>
 
-            <div class="profile-sidebar">
-                <section class="availability-section">
-                    <h2>Disponibilidade</h2>
-                    <div class="availability-controls">
-                        <select id="availability-month" class="form-control">
-                            <option value="0">Janeiro</option>
-                            <option value="1">Fevereiro</option>
-                            <option value="2">Março</option>
-                            <option value="3">Abril</option>
-                            <option value="4">Maio</option>
-                            <option value="5" selected>Junho</option>
-                            <option value="6">Julho</option>
-                            <option value="7">Agosto</option>
-                            <option value="8">Setembro</option>
-                            <option value="9">Outubro</option>
-                            <option value="10">Novembro</option>
-                            <option value="11">Dezembro</option>
-                        </select>
-                        <select id="availability-year" class="form-control">
-                            <option>2022</option>
-                            <option selected>2023</option>
-                            <option>2024</option>
-                        </select>
-                    </div>
-                    <div class="availability-calendar">
-                        <div class="calendar-grid">
-                            <div class="calendar-day-header">Dom</div>
-                            <div class="calendar-day-header">Seg</div>
-                            <div class="calendar-day-header">Ter</div>
-                            <div class="calendar-day-header">Qua</div>
-                            <div class="calendar-day-header">Qui</div>
-                            <div class="calendar-day-header">Sex</div>
-                            <div class="calendar-day-header">Sáb</div>
-                            <!-- Dias serão preenchidos via JavaScript -->
+                        <c:if test="${not empty sessionScope.mensagemErro}">
+                            <div class="alert alert-error">
+                                <i class="fas fa-exclamation-triangle"></i> ${sessionScope.mensagemErro}
+                            </div>
+                            <c:remove var="mensagemErro" scope="session" />
+                        </c:if>
+
+                        <form action="agendar" method="post" class="booking-form">
+                            <input type="hidden" name="coachId" value="${coach.id}">
+
+                            <div class="form-group">
+                                <label for="data">
+                                    <i class="fas fa-calendar"></i> Data da Consulta:
+                                </label>
+                                <input type="date" id="data" name="data" class="form-control" required
+                                       min="<%= java.time.LocalDate.now() %>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="horario">
+                                    <i class="fas fa-clock"></i> Horário:
+                                </label>
+                                <input type="time" id="horario" name="horario" class="form-control" required
+                                       min="08:00" max="19:00" step="1800">
+                            </div>
+
+                            <button type="submit" class="booking-btn">
+                                <i class="fas fa-calendar-check"></i> Confirmar Agendamento
+                            </button>
+                        </form>
+
+                        <div style="margin-top: 15px; text-align: center; color: #666; font-size: 14px;">
+                            <i class="fas fa-info-circle"></i>
+                            Horário de funcionamento: 08:00 às 19:00 | Agendamentos até 90 dias de antecedência
                         </div>
-                    </div>
-                    <div class="time-slots-container">
-                        <h3>Horários disponíveis em <span id="selected-date">--/--/----</span></h3>
-                        <div class="time-slots-grid">
-                            <!-- Horários serão preenchidos via JavaScript -->
-                        </div>
-                        <button id="add-slot-btn" class="btn btn-outline">
-                            <i class="fas fa-plus"></i> Adicionar Horário
-                        </button>
-                    </div>
-                </section>
+                    </section>
+                </c:if>
             </div>
         </div>
     </section>
-
-    <!-- Modal para nova avaliação -->
-    <div id="review-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Adicionar Avaliação</h2>
-            <form id="review-form">
-                <div class="form-group">
-                    <label>Classificação:</label>
-                    <div class="rating-input">
-                        <span class="star-input" data-value="1">★</span>
-                        <span class="star-input" data-value="2">★</span>
-                        <span class="star-input" data-value="3">★</span>
-                        <span class="star-input" data-value="4">★</span>
-                        <span class="star-input" data-value="5">★</span>
-                        <input type="hidden" id="rating-value" name="rating" value="0">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="review-text">Comentário:</label>
-                    <textarea id="review-text" name="review" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para adicionar horário -->
-    <div id="slot-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Adicionar Horário Disponível</h2>
-            <form id="slot-form">
-                <div class="form-group">
-                    <label for="slot-date">Data:</label>
-                    <input type="date" id="slot-date" name="date" required>
-                </div>
-                <div class="form-group">
-                    <label for="slot-time">Horário:</label>
-                    <input type="time" id="slot-time" name="time" required>
-                </div>
-                <div class="form-group">
-                    <label for="slot-duration">Duração (minutos):</label>
-                    <select id="slot-duration" name="duration">
-                        <option value="30">30 minutos</option>
-                        <option value="60" selected>60 minutos</option>
-                        <option value="90">90 minutos</option>
-                        <option value="120">120 minutos</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Adicionar Horário</button>
-            </form>
-        </div>
-    </div>
 </main>
 
 <footer>
@@ -291,14 +342,13 @@
 </footer>
 
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
-<script src="${pageContext.request.contextPath}/js/perfil-coach.js"></script>
 <script>
     // Fallback para imagens que não carregarem
     document.addEventListener('DOMContentLoaded', function() {
         const images = document.querySelectorAll('img');
         images.forEach(img => {
             img.addEventListener('error', function() {
-                if (this.classList.contains('profile-image')) {
+                if (this.closest('.profile-image')) {
                     this.src = '${pageContext.request.contextPath}/img/default-coach.jpg';
                 } else if (this.classList.contains('client-image')) {
                     this.src = '${pageContext.request.contextPath}/img/default-user.jpg';
@@ -306,7 +356,7 @@
             });
         });
 
-        // Formatar telefone (se necessário)
+        // Formatar telefone
         const phoneElements = document.querySelectorAll('.detail-item span');
         phoneElements.forEach(el => {
             if (el.textContent.includes('Telefone')) {
@@ -320,6 +370,47 @@
                 }
             }
         });
+
+        // Configurações específicas para agendamento (apenas para não-coaches)
+        <c:if test="${sessionScope.tipoUsuario != 'coach' || sessionScope.coach.id != coach.id}">
+        // Configurar data mínima como hoje
+        const dataInput = document.getElementById('data');
+        if (dataInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dataInput.min = today;
+
+            // Configurar data máxima (90 dias a partir de hoje)
+            const maxDate = new Date();
+            maxDate.setDate(maxDate.getDate() + 90);
+            dataInput.max = maxDate.toISOString().split('T')[0];
+        }
+
+        // Validação do horário
+        const horarioInput = document.getElementById('horario');
+        if (horarioInput) {
+            horarioInput.addEventListener('change', function() {
+                const time = this.value;
+                const [hours, minutes] = time.split(':').map(Number);
+
+                if (hours < 8 || hours > 19 || (hours === 19 && minutes > 0)) {
+                    alert('Por favor, escolha um horário entre 08:00 e 19:00.');
+                    this.value = '';
+                }
+            });
+        }
+
+        // Auto-hide alerts após 5 segundos
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.5s ease';
+                alert.style.opacity = '0';
+                setTimeout(() => {
+                    alert.remove();
+                }, 500);
+            }, 5000);
+        });
+        </c:if>
     });
 </script>
 </body>
