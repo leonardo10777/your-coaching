@@ -74,7 +74,7 @@
                 <nav class="main-nav">
                     <ul>
                         <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                        <li><a href="sobre.html"><i class="fas fa-users"></i> Sobre Nós</a></li>
+                        <li><a href="sobre.html"><i class="fas fa-users"></i> Sobre</a></li>
                         <li><a href="#services"><i class="fas fa-cogs"></i> Serviços</a></li>
                         <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
                     </ul>
