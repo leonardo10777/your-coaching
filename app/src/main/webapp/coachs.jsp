@@ -264,7 +264,7 @@
 
             <nav class="main-nav">
                 <ul>
-                    <li><a href="dashboard-usuario.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="dashboard-usuario.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="perfil-usuario.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
                     <li><a href="agendamentos.html"><i class="fas fa-calendar"></i> Agendamentos</a></li>
                     <li><a href="list-coaches-for-users" class="active"><i class="fas fa-users"></i> Encontrar Coachs</a></li>

@@ -87,42 +87,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
+        // Dias vazios no início
         for (let i = 0; i < firstDay; i++) {
             const emptyDay = document.createElement('div');
             emptyDay.className = 'calendar-day empty';
             calendarGrid.appendChild(emptyDay);
         }
 
+        // Dias do mês
         for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-day';
             dayElement.textContent = day;
 
-            const random = Math.random();
-            if (random > 0.7) {
-                dayElement.classList.add('booked');
-            } else if (random > 0.3) {
-                dayElement.classList.add('available');
+            const currentDate = new Date(year, month, day);
+
+            // Desabilitar dias passados
+            if (currentDate < today) {
+                dayElement.classList.add('disabled');
             } else {
-                dayElement.classList.add('unavailable');
-            }
-
-            dayElement.addEventListener('click', function() {
-                if (this.classList.contains('available')) {
-                    document.querySelectorAll('.calendar-day.selected').forEach(el => {
-                        el.classList.remove('selected');
-                    });
-
-                    this.classList.add('selected');
-
-                    const selectedDate = new Date(year, month, day);
-                    const formattedDate = selectedDate.toLocaleDateString('pt-BR');
-                    selectedDateElement.textContent = formattedDate;
-
-                    loadTimeSlots(selectedDate);
+                // Simular disponibilidade (na implementação real, virá do backend)
+                const random = Math.random();
+                if (random > 0.7) {
+                    dayElement.classList.add('booked');
+                } else if (random > 0.3) {
+                    dayElement.classList.add('available');
+                } else {
+                    dayElement.classList.add('unavailable');
                 }
-            });
+
+                dayElement.addEventListener('click', function() {
+                    if (this.classList.contains('available')) {
+                        document.querySelectorAll('.calendar-day.selected').forEach(el => {
+                            el.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+
+                        const selectedDate = new Date(year, month, day);
+                        const formattedDate = selectedDate.toLocaleDateString('pt-BR');
+                        selectedDateElement.textContent = formattedDate;
+                        loadTimeSlots(selectedDate);
+                    }
+                });
+            }
 
             calendarGrid.appendChild(dayElement);
         }

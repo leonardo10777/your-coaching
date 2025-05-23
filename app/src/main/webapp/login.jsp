@@ -73,9 +73,9 @@
                 <nav class="main-nav">
                     <ul>
                         <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                        <li><a href="sobre.html"><i class="fas fa-users"></i> Sobre Nós</a></li>
+                        <li><a href="#"><i class="fas fa-users"></i> Sobre Nós</a></li>
                         <li><a href="#services"><i class="fas fa-cogs"></i> Serviços</a></li>
-                        <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
+                        <li><a href="#contact"><i class="fas fa-envelope"></i> Contato</a></li>
                     </ul>
                 </nav>
                 <div class="header-buttons">
@@ -142,8 +142,8 @@
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="#services">Serviços</a></li>
-                        <li><a href="sobre.html">Sobre Nós</a></li>
-                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="#about">Sobre Nós</a></li>
+                        <li><a href="#contact">Contato</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
