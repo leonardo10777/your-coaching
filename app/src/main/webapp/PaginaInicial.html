@@ -7,33 +7,43 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    <style>
+        .modal {
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .modal-content {
+            max-height: 100%;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
-<header class="sticky-header">
+<header>
     <div class="container">
         <div class="header-content">
             <a href="index.html" class="logo">
                 <img src="img/logo.png" alt="Liberte seu Potencial" class="logo-img">
                 <h1>Your Coaching</h1>
+                <div class="logo-text"></div>
             </a>
 
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html" class="active nav-link"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="sobre.html" class="nav-link"><i class="fas fa-users"></i> Sobre Nós</a></li>
-                    <li><a href="#services" class="nav-link"><i class="fas fa-cogs"></i> Serviços</a></li>
-                    <li><a href="contato.html" class="nav-link"><i class="fas fa-envelope"></i> Contato</a></li>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="sobre.html"><i class="fas fa-users"></i> Sobre</a></li>
+                    <li><a href="#services"><i class="fas fa-cogs"></i> Serviços</a></li>
+                    <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
                 </ul>
             </nav>
 
             <div class="header-buttons">
-                <button id="openLoginModal" class="btn btn-primary btn-hover-effect">Login</button>
-                <button id="openRegisterModal" class="btn btn-outline btn-hover-effect">Registrar Usuário</button>
-                <button id="openCoachModal" class="btn btn-outline btn-hover-effect">Registrar Coach</button>
+                <a href="login.jsp" class="btn btn-primary">Login</a>
+                <button id="openRegisterModal" class="btn btn-outline">Registrar Usuário</button>
+                <button id="openCoachModal" class="btn btn-outline">Registrar Coach</button>
             </div>
 
-            <button class="mobile-menu-btn" aria-label="Menu Mobile">
+            <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -42,108 +52,188 @@
 
 <main class="container">
     <!-- Seção Hero -->
-    <section class="hero-section animate__animated animate__fadeIn">
+    <section class="hero-section">
         <div class="hero-content">
-            <h2 class="hero-title">A solução ideal para elevar seu Eu profissional a um novo patamar</h2>
+            <h2>A solução ideal para elevar seu Eu profissional a um novo patamar</h2>
             <p class="hero-text">Confira os serviços propostos e não perca a oportunidade de trilhar seu caminho para o sucesso!</p>
-            <div class="hero-cta">
-                <a href="#services" class="btn btn-primary btn-large btn-hover-effect">Conheça nossos serviços</a>
-                <a href="#video-section" class="btn-play animate__animated animate__pulse animate__infinite">
-                    <i class="fas fa-play"></i> Assistir vídeo
-                </a>
-            </div>
+            <a href="#services" class="btn btn-primary btn-large">Conheça nossos serviços</a>
         </div>
         <div class="hero-image">
-            <img src="img/hero-image.jpg" alt="Pessoa alcançando o sucesso" class="hero-img">
-        </div>
-    </section>
-
-    <!-- Seção Vídeo -->
-    <section id="video-section" class="video-section hidden">
-        <div class="video-container">
-            <button class="close-video">&times;</button>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/SEU_VIDEO" frameborder="0" allowfullscreen></iframe>
+            <img src="img/hero-image.jpg" alt="Pessoa alcançando o sucesso">
         </div>
     </section>
 
     <!-- Seção Serviços -->
     <section id="services" class="service-section">
-        <h2 class="section-title animate__animated animate__fadeInUp">Nossos Serviços</h2>
+        <h2 class="section-title">Nossos Serviços</h2>
         <div class="services-grid">
-            <!-- Serviço 1 -->
-            <div class="service-card animate__animated animate__fadeInUp" data-delay="0.1s">
+            <div class="service-card">
                 <div class="service-icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <h3>Coaching financeiro</h3>
                 <p>Alcance a estabilidade e a liberdade financeira que sempre desejou...</p>
-                <button class="btn-service-details">Saiba mais</button>
             </div>
 
-            <!-- Serviço 2 -->
-            <div class="service-card animate__animated animate__fadeInUp" data-delay="0.2s">
+            <div class="service-card">
                 <div class="service-icon">
                     <i class="fas fa-fire"></i>
                 </div>
                 <h3>Coaching motivacional</h3>
                 <p>Acredite em si mesmo e conquiste tudo o que deseja!...</p>
-                <button class="btn-service-details">Saiba mais</button>
             </div>
 
-            <!-- Serviço 3 -->
-            <div class="service-card animate__animated animate__fadeInUp" data-delay="0.3s">
+            <div class="service-card">
                 <div class="service-icon">
                     <i class="fas fa-briefcase"></i>
                 </div>
                 <h3>Coaching profissional</h3>
                 <p>Destaque-se no mercado e alcance seus objetivos profissionais!...</p>
-                <button class="btn-service-details">Saiba mais</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção Depoimentos -->
-    <section class="testimonials-section">
-        <h2 class="section-title animate__animated animate__fadeInUp">O que dizem nossos clientes</h2>
-        <div class="testimonials-slider">
-            <div class="testimonial active">
-                <p>"O coaching mudou minha vida profissional completamente!"</p>
-                <div class="client-info">
-                    <img src="img/client1.jpg" alt="Cliente 1">
-                    <h4>Carlos Silva</h4>
-                    <span>Gerente de Projetos</span>
-                </div>
-            </div>
-            <div class="testimonial">
-                <p>"Minha confiança aumentou 100% após as sessões de coaching."</p>
-                <div class="client-info">
-                    <img src="img/client2.jpg" alt="Cliente 2">
-                    <h4>Ana Oliveira</h4>
-                    <span>Empreendedora</span>
-                </div>
-            </div>
-            <div class="testimonial">
-                <p>"Finalmente consegui organizar minhas finanças pessoais."</p>
-                <div class="client-info">
-                    <img src="img/client3.jpg" alt="Cliente 3">
-                    <h4>Roberto Santos</h4>
-                    <span>Advogado</span>
-                </div>
-            </div>
-            <div class="slider-controls">
-                <button class="slider-prev"><i class="fas fa-chevron-left"></i></button>
-                <button class="slider-next"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </section>
 </main>
 
 <footer>
-    <!-- Rodapé mantido similar, mas com classes atualizadas -->
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-col">
+                <href="index.html" class="footer-logo">
+
+                </a>
+                <p>Transformando vidas através do coaching profissional, financeiro e motivacional.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#services">Serviços</a></li>
+                    <li><a href="#about">Sobre Nós</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Serviços</h4>
+                <ul>
+                    <li><a href="#">Coaching Financeiro</a></li>
+                    <li><a href="#">Coaching Motivacional</a></li>
+                    <li><a href="#">Coaching Profissional</a></li>
+                    <li><a href="#">Consultoria Individual</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <p>Inscreva-se para receber nossas novidades e dicas exclusivas.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Seu e-mail">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Liberte seu Potencial. Todos os direitos reservados.</p>
+            <div class="legal-links">
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Termos de Serviço</a>
+            </div>
+        </div>
+    </div>
 </footer>
 
-<!-- Modais (mantidos similares, mas com classes atualizadas) -->
+<!-- Modal de Login -->
+<div id="loginModal" class="modal">
+    <!-- Conteúdo anterior do login -->
+</div>
+
+<!-- Modal de Registro de Usuário -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Registrar Usuário</h2>
+        <form id="registerForm" action="create-user" method="post">
+            <div class="form-group">
+                <label for="reg-name">Nome completo</label>
+                <input type="text" id="reg-name" name="reg-name" placeholder="Seu nome" pattern="[A-Za-zÀ-ú\s]{5,100}" title="Mínimo 5 caracteres (apenas letras)" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-email">Email</label>
+                <input type="email" id="reg-email" name="reg-email" placeholder="Seu email" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-telefone">Telefone</label>
+                <input type="tel" id="reg-telefone" name="reg-telefone" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{5}-\d{4}" title="Formato: (00) 00000-0000" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Senha</label>
+                <input type="password" id="reg-password" name="reg-password" placeholder="Crie uma senha" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Mínimo 8 caracteres (letras e números)" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-nascimento">Data de Nascimento</label>
+                <input type="date" id="reg-nascimento" name="reg-nascimento" max="2023-12-31" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Criar conta</button>
+            <div class="login-link">
+                <p>Já possui conta? <a href="#" id="switchToLogin">Fazer login</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Registro de Coach -->
+<div id="coachModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Registrar Coach</h2>
+        <form id="coachForm" action="create-coach" method="post">
+            <div class="form-group"><label for="coach-nome">Nome completo</label><input type="text" id="coach-nome" name="nome" required></div>
+            <div class="form-group"><label for="coach-email">Email</label><input type="email" id="coach-email" name="email" required></div>
+            <div class="form-group"><label for="coach-telefone">Telefone</label><input type="tel" id="coach-telefone" name="telefone" pattern="\(\d{2}\) \d{5}-\d{4}" required></div>
+            <div class="form-group"><label for="coach-password">Senha</label><input type="password" id="coach-password" name="password" minlength="8" required></div>
+            <div class="form-group"><label for="coach-nascimento">Data de Nascimento</label><input type="date" id="coach-nascimento" name="dataNascimento" required></div>
+            <div class="form-group"><label for="coach-curso">Curso</label><input type="text" id="coach-curso" name="curso" required></div>
+            <div class="form-group"><label for="coach-area">Área</label><input type="text" id="coach-area" name="area" required></div>
+            <div class="form-group"><label for="coach-desc">Descrição profissional</label><textarea id="coach-desc" name="descricaoprofissional" rows="4" required></textarea></div>
+            <div class="form-group"><label for="coach-preco">Preço</label><input type="text" id="coach-preco" name="preco" required></div>
+            <button type="submit" class="btn btn-primary">Criar conta Coach</button>
+        </form>
+    </div>
+</div>
 
 <script src="js/script.js"></script>
+<script>
+    // Máscara de telefone
+    document.getElementById('reg-telefone')?.addEventListener('input', formatPhone);
+    document.getElementById('coach-telefone')?.addEventListener('input', formatPhone);
+
+    function formatPhone(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.substring(0, 11);
+        if (value.length > 0) {
+            value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}`;
+        }
+        e.target.value = value;
+    }
+
+    // Mostrar modais
+    document.getElementById("openRegisterModal").onclick = () => {
+        document.getElementById("registerModal").style.display = "block";
+    };
+    document.getElementById("openCoachModal").onclick = () => {
+        document.getElementById("coachModal").style.display = "block";
+    };
+    document.querySelectorAll(".close-modal").forEach(btn => {
+        btn.onclick = () => {
+            btn.closest(".modal").style.display = "none";
+        };
+    });
+
+    // Mensagens
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('sucesso')) {
+        alert('Cadastro realizado com sucesso!');
+    } else if (urlParams.has('erro')) {
+        alert('Erro no cadastro. Verifique os dados e tente novamente.');
+    }
+</script>
 </body>
 </html>

@@ -147,6 +147,10 @@ public class CoachDao {
         return null;
     }
 
+    public Coach findById(int id) {
+        return findCoachById(id); // Reutiliza o método existente
+    }
+
     public void createTableIfNotExists() {
         String SQL = "CREATE TABLE IF NOT EXISTS COACH (" +
                 "ID INT AUTO_INCREMENT PRIMARY KEY, " +
