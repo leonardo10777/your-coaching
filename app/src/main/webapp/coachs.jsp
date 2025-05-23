@@ -267,7 +267,7 @@
                 <ul>
                     <li><a href="dashboard-usuario.html"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="perfil-usuario.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                    <li><a href="agendamentos.html"><i class="fas fa-calendar"></i> Agendamentos</a></li>
+                    <li><a href="agendamentos.jsp"><i class="fas fa-calendar"></i> Agendamentos</a></li>
                     <li><a href="list-coaches-for-users" class="active"><i class="fas fa-users"></i> Encontrar Coachs</a></li>
                 </ul>
             </nav>
@@ -307,7 +307,7 @@
                     <div class="coach-body">
                         <p class="coach-description">${coach.descricaoprofissional}</p>
                         <div class="coach-actions">
-                            <a href="agendar-consulta?coachId=${coach.id}" class="btn-know-more">Agendar Consulta</a>
+                            <a href="${pageContext.request.contextPath}/perfil-coach?coachId=${coach.id}" class="btn-know-more">Agendar Consulta</a>
                             <a href="${pageContext.request.contextPath}/perfil-coach?coachId=${coach.id}" class="btn-view-profile">Visualizar Perfil</a>
                         </div>
 
